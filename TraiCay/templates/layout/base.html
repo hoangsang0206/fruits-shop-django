@@ -73,8 +73,8 @@
                     <div class="close-search flex-column align-items-center">
                         <i class="fa-solid fa-arrow-left"></i>
                     </div>
-                    <form action="/search" method="get" class="search-form">
-                        <input type="text" id="search" name="search" class="search-box" placeholder="Bạn cần tìm gì?" required autocomplete="off" />
+                    <form action="/timkiem" method="GET" class="search-form">
+                        <input type="text" id="search" name="q" class="search-box" placeholder="Bạn cần tìm gì?" required autocomplete="off" />
                         <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
                     <div class="ajax-search-autocomplete">
@@ -183,8 +183,8 @@
                 </a>
                 <div class="nav-break"></div>
                 <a href="javascript:void(0)" class="nav-item">
-                    <i class="fa-solid fa-screwdriver-wrench nav-icon"></i>
-                    <span>Chính sách bảo hành</span>
+                    <i class="fa-solid fa-truck-fast nav-icon"></i>
+                    <span>Chính sách giao hàng</span>
                 </a>
                 <div class="nav-break"></div>
                 <a href="javascript:void(0)" class="nav-item">
@@ -194,7 +194,7 @@
                 <div class="nav-break"></div>
                 <a href="javascript:void(0)" class="nav-item">
                     <i class="fa-solid fa-money-check-dollar nav-icon"></i>
-                    <span>Hướng dẫn trả góp</span>
+                    <span>Hướng dẫn đặt hàng</span>
                 </a>
                 <div class="nav-break"></div>
                 <a href="javascript:void(0)" class="nav-item">
@@ -219,7 +219,7 @@
             <ion-icon name="grid-outline" class="bottom-nav-icon"></ion-icon>
             <span>Danh mục</span>
         </div>
-        <a href="/accountjavascript:void(0)orders" class="bottom-nav-link bottom-nav-promotion d-flex flex-column align-items-center justify-content-center">
+        <a href="/account#orders" class="bottom-nav-link bottom-nav-promotion d-flex flex-column align-items-center justify-content-center">
             <ion-icon name="clipboard-outline" class="bottom-nav-icon"></ion-icon>
             <span>Đơn hàng</span>
         </a>
@@ -275,8 +275,8 @@
                         </li>
                         <li class="sidebar-info-list-item">
                             <a href="javascript:void(0)" class="sidebar-info-link">
-                                <i class="fa-solid fa-screwdriver-wrench megamenu-icon"></i>
-                                Chính sách bảo hành
+                                <i class="fa-solid fa-truck-fast megamenu-icon"></i>
+                                Chính sách giao hàng
                             </a>
                         </li>
                         <li class="sidebar-info-list-item">
@@ -288,7 +288,7 @@
                         <li class="sidebar-info-list-item">
                             <a href="javascript:void(0)" class="sidebar-info-link">
                                 <i class="fa-solid fa-money-check-dollar megamenu-icon"></i>
-                                Hướng dẫn trả góp
+                                Hướng dẫn đặt hàng
                             </a>
                         </li>
                         <li class="sidebar-info-list-item">
@@ -314,7 +314,9 @@
             <div class="container-xxl hidden-menu-box">
                 <section class="menu">
                     <div class="sidebar">
-                        <!-- render megamenu here -->
+                        <ul class="megamenu">
+                            
+                        </ul>
                     </div>
                 </section>
             </div>
@@ -347,7 +349,7 @@
                             <span class="icon-title"></span>
                         </div>
                         <div class="footer-content">
-                            <a href="javascript:void(0)">Chính sách bảo hành</a>
+                            <a href="javascript:void(0)">Chính sách hoàn hàng</a>
                             <a href="javascript:void(0)">Chính sách thanh toán</a>
                             <a href="javascript:void(0)">Chính sách giao hàng</a>
                             <a href="javascript:void(0)">Chính sách bảo mật</a>

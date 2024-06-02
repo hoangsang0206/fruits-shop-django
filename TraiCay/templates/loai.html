@@ -1,0 +1,122 @@
+{% extends 'layout/base.html' %}
+{% block title %}{{Loai.TenLoai}}{% endblock %}
+
+{% block content %}
+
+    {% load humanize %} 
+    {% load static %}
+
+    <section class="breadcrumb">
+        <ul class="breadcrumb-list d-flex">
+            <li class="breadcrumb-item">
+                <a href="/">
+                    Trang chủ
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <span>{{Loai.TenLoai}}</span>
+            </li>
+        </ul>
+    </section>
+
+    <section class="filter-products">
+        <div class="filter-box d-flex justify-content-between mt-2 mb-3 gap-2">
+            <div class="filter-button-list d-flex flex-wrap gap-2 align-items-center">   
+                <div class="sort-dropdown-box d-flex align-items-center justify-content-end">
+                    <div class="sort-dropdown">
+                        <button class="sort-dropdown-btn">
+                            <i class="fa-solid fa-arrow-down-short-wide"></i>
+                            Sắp xếp theo: <span id="sort-value"></span>
+                        </button>
+                        <div class="sort-dropdown-content">
+        
+                            <a href="javascript:void(0)">
+                                <div class="sort-dropdown-content-item ">
+                                    Ngẫu nhiên
+                                </div>
+                            </a>
+        
+                            <a href="javascript:void(0)">
+                                <div class="sort-dropdown-content-item ">
+                                    Giá tăng dần
+                                </div>
+                            </a>
+        
+                            <a href="javascript:void(0)">
+                                <div class="sort-dropdown-content-item ">
+                                    Giá giảm dần
+                                </div>
+                            </a>
+        
+                            <a href="javascript:void(0)">
+                                <div class="sort-dropdown-content-item ">
+                                    Tên A - Z
+                                </div>
+                            </a>
+        
+                            <a href="javascript:void(0)">
+                                <div class="sort-dropdown-content-item ">
+                                    Tên Z - A
+                                </div>
+                            </a>
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% if not Fruits %}
+            <div class="filter-error mt-3 mb-5 px-3 d-flex flex-column align-items-center justify-content-center">
+                <p class="text-center">
+                    Có thể các sản phẩm này chưa được cập nhật hoặc đã hết hàng, vui lòng chọn danh mục sản phẩm khác
+                </p>
+                <button class="to-home-page-btn" onclick="window.location.href='/'">
+                    QUAY LẠI TRANG CHỦ
+                </button>
+            </div>
+        {% else %}
+            <div class="filter-item-list">
+                {% for fruit in Fruits %}
+                    <div class="filter-item">
+                        <div class="product-box">
+                            <a href="/traicay/{{fruit.fruit.MaSP}}" class="product-link">
+                                <div class="product-image lazy-loading">
+                                    <img lazy-src="{% if fruit.images %} {{fruit.images.0.HinhAnh}} {% else %} {% static 'images/no-images.jpg' %} {% endif %}" alt="" class="product-img">
+                                </div>
+                            </a>
+                            {% if fruit.quantity <= 0 %}
+                                <div class="out-of-stock mt-1 text-center">
+                                    Hết hàng
+                                </div>
+                            {% endif %}
+                            <a href="/traicay/{{fruit.MaSP}}" class="product-link">
+                                <div class="product-name">
+                                    {{fruit.fruit.TenSP}}
+                                </div>
+                            </a>
+
+                            <div class="product-price d-flex align-items-center">
+                                <span>{{ fruit.fruit.DonGia|floatformat:"0"|intcomma }}đ</span>
+                            </div>
+                            <button class="view-product" onclick="window.location.href='/traicay/{{fruit.fruit.MaSP}}'">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                            <button class="btn-add-to-cart" data-product="{{fruit.fruit.MaSP}}">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="pagination-box d-flex justify-content-center align-items-center">
+
+        </div>
+
+    </section>
+
+    <section class="side-overlay"></section>
+    {% endblock %}

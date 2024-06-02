@@ -637,47 +637,6 @@ header {
     text-decoration: none;
 }
 
-.login, .register, .forgot-password, .reset-password, .logout-confirm {
-    width: 100vw;
-    height: 100vh;
-    background: #00000075;
-    top: 0;
-    left: 0;
-    display: grid;
-    visibility: hidden;
-    place-items: center;
-    z-index: 30;
-}
-
-.form-container {
-    width: 30%;
-    background: var(--content-color-white);
-    padding:2rem 2rem 1.5rem 2rem;
-    border-radius: 0.3rem;
-    cursor: auto;
-    transform: translateY(-100%);
-    opacity: 0;
-}
-
-.showForm {
-    transform: translateY(0);
-    opacity: 1;
-    transition: var(--trans-all-04);
-}
-
-.form-bottom {
-    margin-top: 1rem;
-}
-
-.form-header {
-    font-size: 1.4rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem !important;
-}
-
-.login-form, .register-form {
-}
-
 .form-input-box {
     border: 1px solid #cfcfcf;
     border-radius: 0.3rem;
@@ -704,15 +663,6 @@ header {
     padding: 0 0.4rem;
     background: var(--content-color-white);
     transition: transform .4s ease;
-}
-
-.forgot-password-box {
-    margin-top: 1rem;
-}
-
-.forgot-password-link {
-    font-size: 1rem;
-    cursor: pointer;
 }
 
 .form-submit-btn {
@@ -744,60 +694,6 @@ header {
     font-size: 1.5rem;
 }
 
-.logout-confirm-box {
-    width: 30rem;
-    background: var(--content-color-white);
-    padding: 2rem 2rem 1.5rem 2rem;
-    border-radius: 0.3rem;
-    cursor: auto;
-    opacity: 0;
-    transform: scale(0);
-    transition: all .3s ease;
-}
-
-.showLogoutConfirm {
-    opacity: 1;
-    transform: scaleZ(1);
-}
-
-.logout-confirm-box i {
-    font-size: 4rem;
-    color: #ff6606;
-    margin-bottom: 1rem;
-}
-
-.logout-confirm-box span {
-    font-size: 1.1rem;
-}
-
-.logout-confirm-btn-box {
-    width: 90%;
-    margin-top: 1.5rem;
-}
-
-.logout-confirm-btn-box button {
-    border: none;
-    padding: 0.7rem 1rem;
-    border-radius: 0.2rem;
-    width: 49%;
-    font-weight: 500;
-}
-
-.logout-confirm-no:hover {
-    background: #d4d4d4;
-}
-
-.logout-confirm-yes {
-    display: grid;
-    place-items: center;
-    background: var(--primary-color);
-    color: var(--content-color-white);
-}
-
-.logout-confirm-yes:hover {
-    outline: 2px solid var(--primary-color-hover);
-}
-
 .form-error {
     margin-bottom: 1rem;
     border-radius: 0.2rem;
@@ -822,11 +718,6 @@ header {
     padding: 0.3rem 0;
 }
 
-.field-validation-error span {
-    margin: 0.3rem 0;
-    color: #e30019;
-    font-size: 0.85rem !important;
-}
 /* ------------------------------------ */
 nav {
     background-color: #ffff;

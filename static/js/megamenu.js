@@ -3,8 +3,7 @@ const loadCategories = () => {
         url: 'api/loai/?format=json',
         type: 'GET',
         success: (response) => {
-            console.log(response)
-            $('.menu .megamenu').empty();
+            $('.menu .megamenu, .hidden-menu .megamenu').empty();
             $('.mobile-sidebar .megamenu').empty();
             $('.sub-header-item-list').empty();
 
@@ -25,7 +24,7 @@ const loadCategories = () => {
                                     
                 if(index < 14) {
                     
-                    $('.menu .megamenu').append(el);
+                    $('.menu .megamenu, .hidden-menu .megamenu').append(el);
                 }
                 $('.mobile-sidebar .megamenu').append(el);
                 $('.sub-header-item-list').append(_el);
