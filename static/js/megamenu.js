@@ -1,6 +1,6 @@
 const loadCategories = () => {
     $.ajax({
-        url: 'api/loai/?format=json',
+        url: '/api/loai/?format=json',
         type: 'GET',
         success: (response) => {
             $('.menu .megamenu, .hidden-menu .megamenu').empty();

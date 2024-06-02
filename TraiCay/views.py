@@ -5,14 +5,9 @@ from .models import SanPham, HinhAnhSP, Loai, ChiTietKho, Slider
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import LoaiSerializer
+from .serializers import LoaiSerializer, SanPhamSerializer
 
 # Create your views here.
-@api_view(['GET'])
-def getLoai(request):
-    loai = Loai.objects.all()
-    return Response(LoaiSerializer(loai, many=True).data)
-
 def home(request):
     Home_Fruits = []
     DSLoai = Loai.objects.all()[:7]
@@ -67,3 +62,23 @@ def tim_kiem(request):
             fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
 
     return render(request, 'timkiem.html', {'value': query, 'Fruits': fruits})
+
+
+
+
+### API #########################################
+@api_view(['GET'])
+def getLoai(request):
+    loai = Loai.objects.all()
+    return Response(LoaiSerializer(loai, many=True).data)
+
+@api_view(['GET'])
+def getTimKiem(request):
+    query = request.GET.get('q')
+    if query:
+        sanpham = SanPham.objects.filter(TenSP__icontains=query)
+    else:
+        sanpham = SanPham.objects.all()
+    
+    serializer = SanPhamSerializer(sanpham, many=True)
+    return Response(serializer.data)
