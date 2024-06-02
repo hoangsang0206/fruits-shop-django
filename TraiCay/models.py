@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Loai(models.Model):
@@ -22,13 +23,14 @@ class KhachHang(models.Model):
     SDT = models.CharField(max_length=20)
     Email = models.CharField(max_length=100)
     DiaChi = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
 
 class NhanVien(models.Model):
     MaNV = models.CharField(max_length=10, primary_key=True)
     TenNV = models.CharField(max_length=100)
     SDT = models.CharField(max_length=20)
     Email = models.CharField(max_length=100)
-    DiaChi = models.CharField(max_length=100)    
+    DiaChi = models.CharField(max_length=100)
 
 class NhaCungCap(models.Model):
     MaNCC = models.CharField(max_length=10, primary_key=True)
@@ -75,3 +77,8 @@ class ChiTietPhieuNhap(models.Model):
 class Slider(models.Model):
     HinhAnh = models.TextField()
     Link = models.TextField()
+
+class GioHang(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
+    SanPham = models.ForeignKey(SanPham, on_delete=models.CASCADE, null=False)
+    SoLuong = models.IntegerField(default=0, null=False)

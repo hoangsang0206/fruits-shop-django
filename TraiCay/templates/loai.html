@@ -1,5 +1,11 @@
 {% extends 'layout/base.html' %}
-{% block title %}{{Loai.TenLoai}}{% endblock %}
+{% block title %}
+    {% if Loai %}
+        {{Loai.TenLoai}}
+    {% else %}
+        Tất cả sản phẩm
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 
@@ -14,7 +20,11 @@
                 </a>
             </li>
             <li class="breadcrumb-item">
-                <span>{{Loai.TenLoai}}</span>
+                {% if Loai %}
+                    {{Loai.TenLoai}}
+                {% else %}
+                    <span>Tất cả sản phẩm</span>
+                {% endif %}
             </li>
         </ul>
     </section>
@@ -91,7 +101,7 @@
                                     Hết hàng
                                 </div>
                             {% endif %}
-                            <a href="/sanpham/{{fruit.MaSP}}" class="product-link">
+                            <a href="/sanpham/{{fruit.fruit.MaSP}}" class="product-link">
                                 <div class="product-name">
                                     {{fruit.fruit.TenSP}}
                                 </div>

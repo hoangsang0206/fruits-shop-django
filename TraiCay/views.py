@@ -8,6 +8,9 @@ from rest_framework.decorators import api_view
 from .serializers import LoaiSerializer, SanPhamSerializer
 
 # Create your views here.
+def dangnhap(request):
+    return render(request, 'dangnhap_dangky.html')
+
 def home(request):
     Home_Fruits = []
     DSLoai = Loai.objects.all()[:7]
@@ -31,8 +34,11 @@ def home(request):
     return render(request, 'home.html', {'Home_Fruits' : Home_Fruits, 'Sliders': Sliders})
 
 def loc_theo_loai(request, id):
-    loai = get_object_or_404(Loai, pk=id)
-    sanpham = SanPham.objects.filter(MaLoai = loai)
+    if id == 'all':
+        sanpham = SanPham.objects.all()
+    else:
+        loai = get_object_or_404(Loai, pk=id)
+        sanpham = SanPham.objects.filter(MaLoai = loai)
     fruits = []
     for sp in sanpham:
         spkho = ChiTietKho.objects.filter(MaSP=sp)
@@ -43,7 +49,7 @@ def loc_theo_loai(request, id):
 
         fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
 
-    return render(request, 'loai.html', {'Loai': loai, 'Fruits': fruits})
+    return render(request, 'loai.html',{'Fruits': fruits} if id == 'all' else {'Loai': loai, 'Fruits': fruits})
 
 def tim_kiem(request):
     query = request.GET.get('q')
@@ -67,7 +73,7 @@ def sanpham(request, id):
     sanpham = get_object_or_404(SanPham,  pk=id)
     loai = sanpham.MaLoai
     images = HinhAnhSP.objects.filter(SanPham = sanpham)
-    spkho = ChiTietKho.objects.filter(MaSP=sp)
+    spkho = ChiTietKho.objects.filter(MaSP=sanpham)
     quantity = 0
     if spkho:
         for spk in spkho:
@@ -75,7 +81,9 @@ def sanpham(request, id):
 
     return render(request, 'sanpham.html', {'Loai': loai, 'Fruit': sanpham, 'Quantity': quantity, 'images': images})
 
+def giohang(request):
 
+    return render(request, 'giohang.html')
 
 ### API #########################################
 @api_view(['GET'])
@@ -93,3 +101,9 @@ def getTimKiem(request):
     
     serializer = SanPhamSerializer(sanpham, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+def them_gio_hang(request):
+    msp = request.POST.get('id')
+    sanpham = get_object_or_404(SanPham, pk=msp)

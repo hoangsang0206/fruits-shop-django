@@ -12,7 +12,7 @@ function hideWebLoader() {
 function updateCartCount() {
     $.ajax({
         type: 'POST',
-        url: '/cart/cartcount',
+        url: '/api/giohang/capnhat',
         success: (data) => {
             $('.cart-count').empty();
             $('.cart-count').append(data.count);
@@ -29,17 +29,16 @@ $(document).ready(() => {
 })
 
 //-Add product to cart ------------------------------------
-$('.add-to-cart-btn, .buy-action-btn').click(() => {
-    var productID = $('.add-to-cart-btn').data('product-id');
+$('.add-to-cart-btn, .buy-action-btn').click(function() {
+    const productID = $(this).data('product-id');
 
     if (productID.length > 0) {
         showWebLoader();
         $.ajax({
             type: 'POST',
-            url: '/cart/addtocart',
+            url: '/api/giohang/them',
             data: {
-                ProductID: productID,
-                Quantity: 1
+                id: productID
             },
             success: (respone) => {
                 if (respone.success) {
@@ -52,19 +51,18 @@ $('.add-to-cart-btn, .buy-action-btn').click(() => {
 })
 
 $('.buy-action-btn').click(() => {
-    setTimeout(() => { window.location.href = '/cart' }, 510)
+    setTimeout(() => { window.location.href = '/giohang' }, 510)
 })
 
-$('.btn-add-to-cart').click((e) => {
-    var productID = $(e.target).data('product');
+$('.btn-add-to-cart').click(function() {
+    const productID = $(this).data('product');
 
     if (productID.length > 0) {
         $.ajax({
             type: 'POST',
-            url: '/cart/addtocart',
+            url: '/api/giohang/them',
             data: {
-                ProductID: productID,
-                Quantity: 1
+                id: productID
             },
             success: (respone) => {
                 if (respone.success) {
@@ -83,8 +81,7 @@ $('.not-logged-in').click(() => {
 
 //---------------------------------
 $(document).ready(() => {
-    var cartFormInput = $('.cart-form input').toArray();
-    var addressVal;
+    const cartFormInput = $('.cart-form input').toArray();
     cartFormInput.forEach((input) => {
         checkInputValid($(input));
     })
@@ -147,20 +144,19 @@ $(document).ready(() => {
 })
 
 //--Update cart item quantity
-$('.update-quantity').click((e) => {
-    var productID = $(e.target).data('product-btn');
-    var updateType = $(e.target).data('update');
-    var parentOfBtn = $(e.target).parent('.cart-product-quantity');
-    var inputQuantity = parentOfBtn.children('input[name="quantity"]');
+$('.update-quantity').click(function() {
+    const productID = $(this).data('product-btn');
+    const updateType = $(this).data('update');
+    const inputQuantity = $(this).parent('.cart-product-quantity').children('input[name="quantity"]');
 
     if (productID.length > 0 && updateType.length > 0) {
         showWebLoader();
         $.ajax({
             type: 'Post',
-            url: '/cart/updatequantity',
+            url: '/cart/capnhatsoluong',
             data: {
-                productID: productID,
-                updateType: updateType
+                id: productID,
+                type: updateType
             },
             success: (res) => {
                 setTimeout(hideWebLoader, 500);
