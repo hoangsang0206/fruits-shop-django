@@ -1,4 +1,5 @@
 from django.db import models
+
 # Create your models here.
 class Loai(models.Model):
     MaLoai = models.CharField(max_length=10, primary_key=True)
@@ -12,7 +13,7 @@ class SanPham(models.Model):
     MoTa = models.TextField()
 
 class HinhAnhSP(models.Model):
-    SanPham = models.ForeignKey(SanPham, on_delete=models.CASCADE, null=False)
+    SanPham = models.ForeignKey(SanPham, on_delete=models.SET_NULL, null=True)
     HinhAnh = models.TextField()
 
 class KhachHang(models.Model):
@@ -71,8 +72,6 @@ class ChiTietPhieuNhap(models.Model):
     MaSP = models.ForeignKey(SanPham, on_delete=models.SET_NULL, null=True)
     DonGia = models.DecimalField(max_digits=10, decimal_places=2)
 
-
-
-    
-
-    
+class Slider(models.Model):
+    HinhAnh = models.TextField()
+    Link = models.TextField()

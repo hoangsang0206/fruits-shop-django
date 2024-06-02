@@ -4,5 +4,6 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.home, name='TrangChu'),
-    
+    path('home/', views.home, name='TrangChu'),
+    path('api/loai/', views.getLoai, name='GetLoai'),
 ]

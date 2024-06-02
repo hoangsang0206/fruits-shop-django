@@ -1,25 +1,4 @@
-﻿//Load sub header data --------------------------
-$(document).ready(() => {
-    $.ajax({
-        type: 'GET',
-        url: '/api/categories',
-        success: (data) => {
-            $('.sub-header-item-list').empty();
-            for (var i = 0; i < data.categories.length; i++) {
-                var str = `<li class="sub-header-item">
-                    <a href="/collections/${data.categories[i].CateID}" class="sub-header-link">${data.categories[i].CateName}</a>
-                </li>`;
-
-                $('.sub-header-item-list').append(str);
-            }
-        },
-        error: () => {
-            console.error("Cannot get category list");
-        }
-    })
-})
-
-//Show overlay when click category button -------------------------------------------
+﻿//Show overlay when click category button -------------------------------------------
 $(".categories-btn").click(() => {
     $(".hidden-menu").toggleClass("showHiddenMenu");
 
