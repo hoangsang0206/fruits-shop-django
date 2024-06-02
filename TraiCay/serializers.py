@@ -20,8 +20,13 @@ class SanPhamSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_quantity(self, obj):
+        quantity = 0
         try:
-            kho = ChiTietKho.objects.get(MaSP = obj)
-            return kho.SoLuongTon
+            spkho = ChiTietKho.objects.filter(MaSP=sp)
+            if spkho:
+                for spk in spkho:
+                    quantity += spk.SoLuongTon
         except:
-            return 0
+            quantity = 0
+
+        return quantity

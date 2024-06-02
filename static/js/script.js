@@ -478,14 +478,14 @@ $('.search-form #search').keyup(function () {
                         for (let i = 0; i <= responses.length && i < maxItems; i++) {
                             const product = responses[i];
                             if (product != null) {
-                                const strHTML = `<a href="/fruit/${product.MaSP}"> 
+                                const strHTML = `<a href="/sanpham/${product.MaSP}"> 
                                     <div class="ajax-search-item d-flex justify-content-between align-items-center">
                                         <div class="ajax-search-item-info">
                                             <div class="ajax-search-item-name d-flex align-items-center">
                                                 <h3>${product.TenSP}</h3>
                                             </div>
                                             <div class="ajax-search-item-price d-flex align-items-center">
-                                                <h3>${product.DonGia.toLocaleString("vi-VN") + 'đ'}</h3>
+                                                <h3>${parseFloat(product.DonGia).toLocaleString("vi-VN") + 'đ'}</h3>
                                             </div>
                                         </div>
                                         <div class="ajax-search-item-image">

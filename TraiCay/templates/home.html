@@ -96,7 +96,7 @@
                         {% for fruit in home_fr.fruits %}
                             <div class="slick-slider-item">
                                 <div class="product-box">
-                                    <a href="/traicay/{{fruit.fruit.MaSP}}" class="product-link">
+                                    <a href="/sanpham/{{fruit.fruit.MaSP}}" class="product-link">
                                         <div class="product-image lazy-loading">
                                             <img lazy-src="{% if fruit.images %} {{fruit.images.0.HinhAnh}} {% else %} {% static 'images/no-images.jpg' %} {% endif %}" alt="" class="product-img">
                                         </div>
@@ -106,7 +106,7 @@
                                             Hết hàng
                                         </div>
                                     {% endif %}
-                                    <a href="/traicay/{{fruit.MaSP}}" class="product-link">
+                                    <a href="/sanpham/{{fruit.MaSP}}" class="product-link">
                                         <div class="product-name">
                                             {{fruit.fruit.TenSP}}
                                         </div>
@@ -115,7 +115,7 @@
                                     <div class="product-price d-flex align-items-center">
                                         <span>{{ fruit.fruit.DonGia|floatformat:"0"|intcomma }}đ</span>
                                     </div>
-                                    <button class="view-product" onclick="window.location.href='/traicay/{{fruit.fruit.MaSP}}'">
+                                    <button class="view-product" onclick="window.location.href='/sanpham/{{fruit.fruit.MaSP}}'">
                                         <i class="fa-regular fa-eye"></i>
                                     </button>
                                     <button class="btn-add-to-cart" data-product="{{fruit.fruit.MaSP}}">

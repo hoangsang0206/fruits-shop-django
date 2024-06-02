@@ -15,11 +15,11 @@ def home(request):
         fruits = []
         sanpham = SanPham.objects.filter(MaLoai = loai)
         for sp in sanpham:
-            try:
-                quantity = ChiTietKho.objects.get(MaSP=sp)
-                quantity = quantity.SoLuongTon
-            except ChiTietKho.DoesNotExist:
-                quantity = 0
+            spkho = ChiTietKho.objects.filter(MaSP=sp)
+            quantity = 0
+            if spkho:
+                for spk in spkho:
+                    quantity += spk.SoLuongTon
 
             fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
 
@@ -35,13 +35,13 @@ def loc_theo_loai(request, id):
     sanpham = SanPham.objects.filter(MaLoai = loai)
     fruits = []
     for sp in sanpham:
-            try:
-                quantity = ChiTietKho.objects.get(MaSP=sp)
-                quantity = quantity.SoLuongTon
-            except ChiTietKho.DoesNotExist:
-                quantity = 0
+        spkho = ChiTietKho.objects.filter(MaSP=sp)
+        quantity = 0
+        if spkho:
+            for spk in spkho:
+                quantity += spk.SoLuongTon
 
-            fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
+        fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
 
     return render(request, 'loai.html', {'Loai': loai, 'Fruits': fruits})
 
@@ -53,16 +53,27 @@ def tim_kiem(request):
         sanpham = SanPham.objects.all()
     fruits = []
     for sp in sanpham:
-            try:
-                quantity = ChiTietKho.objects.get(MaSP=sp)
-                quantity = quantity.SoLuongTon
-            except ChiTietKho.DoesNotExist:
-                quantity = 0
+        spkho = ChiTietKho.objects.filter(MaSP=sp)
+        quantity = 0
+        if spkho:
+            for spk in spkho:
+                quantity += spk.SoLuongTon
 
-            fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
+        fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
 
     return render(request, 'timkiem.html', {'value': query, 'Fruits': fruits})
 
+def sanpham(request, id):
+    sanpham = get_object_or_404(SanPham,  pk=id)
+    loai = sanpham.MaLoai
+    images = HinhAnhSP.objects.filter(SanPham = sanpham)
+    spkho = ChiTietKho.objects.filter(MaSP=sp)
+    quantity = 0
+    if spkho:
+        for spk in spkho:
+            quantity += spk.SoLuongTon
+
+    return render(request, 'sanpham.html', {'Loai': loai, 'Fruit': sanpham, 'Quantity': quantity, 'images': images})
 
 
 
