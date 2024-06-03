@@ -1,0 +1,125 @@
+body {
+    background-image: url('../images/background/2148144274.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.container-fluid {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.login-container {
+    width: 30rem;
+    max-width: calc(100% - 1rem);
+    max-height: calc(100% - 1rem);
+    background: #fff;
+    border-radius: 0.6rem;
+    margin-right: 1rem;
+    padding: 2rem 3rem;
+}
+
+.login-input-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.login-input-box i {
+    width: 3rem;
+    display: grid;
+    place-items: center;
+    font-size: 1.3rem;
+    color: #757575;
+}
+
+.login-input-box input {
+    width: calc(100% - 3rem);
+    border-radius: .4rem;
+    border: none;
+    outline: none;
+    padding: .6rem 1rem .6rem 0;
+    font-weight: 500;
+}
+
+.login-input-box input:focus ~ .input-focus, 
+.login-input-box input:invalid _ .input-focus {
+    background: #6d6d6d;
+    transform: scale(1);
+}
+
+.login-input-box label {
+    margin-bottom: .2rem;
+    font-size: .87rem;
+    font-weight: 500;
+    color: #000;
+}
+
+.login-input {
+    width: 100%;
+    position: relative;
+    display: flex;
+    border-bottom: 2px solid #ccc;
+}
+
+.input-focus {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background: none;
+    transform: scale(0);
+    transform-origin: left;
+    transition: all .5s ease;
+}
+
+.login-redirect * {
+    font-size: .9rem;
+}
+
+.errorlist li {
+    color: #e30019;
+}
+
+.other-login a {
+    text-decoration: none;
+}
+
+.other-login span {
+    color: #757575;
+    margin-bottom: .5rem;
+}
+
+.other-login .bxl-facebook-circle {
+    color: #1773ea;
+    font-size: 2.4rem;
+}
+
+.other-login .bxl-google {
+    font-size: 2.4rem;
+    background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55% / 150% 150% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        background-size: auto;
+    }
+
+    .container-fluid {
+        justify-content: center !important;
+    }
+
+    .login-container {
+        margin-right: 0;
+        padding: 2rem 2rem;
+    }
+}

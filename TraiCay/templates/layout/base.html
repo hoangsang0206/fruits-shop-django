@@ -120,31 +120,31 @@
                 <div class="login-btn-box position-relative">
                     <div class="login-btn">
                         {% if user.is_authenticated %}
-                            <a href="/account" class="logged-link">
+                            <a href="/taikhoan" class="logged-link">
                                 <span>{{user.username}}</span>
                             </a>
                             <div class="login-info-box account-logged position-absolute">
-                                <a href="/account">
+                                <a href="/taikhoan">
                                     <div class="login-info-name">
                                         <!-- <img src="/images/icons/hello.png" alt="" /> -->
                                         <span> Xin chào, {{user.username}}</span>
                                     </div>
                                 </a>
                                 <hr />
-                                <a href="/account#orders">
+                                <a href="/taikhoan#orders">
                                     <div class="login-info-order">
                                         <i class="fa-regular fa-clipboard"></i>
                                         <span>Đơn hàng của tôi</span>
                                     </div>
                                 </a>
                                 <hr />
-                                <div class="login-info-logout d-flex align-items-center">
+                                <div class="login-info-logout d-flex align-items-center" onclick="window.location.href='/dangxuat'">
                                     <ion-icon name="log-out-outline"></ion-icon>
                                     <span>Đăng xuất</span>
                                 </div>
                             </div>
                         {% else %}
-                            <a href="javascript:void(0)" class="login-link">
+                            <a href="/dangnhap" class="login-link">
                                 <i class="fa-regular fa-user header-icon login-btn"></i>
                                 <span>Đăng<br /> nhập</span>
                             </a>
@@ -152,10 +152,10 @@
                             <div class="login-info-box position-absolute">
                                 <h4>Đăng nhập/Đăng ký</h4>
                                 <div class="login-register-btn-box d-flex align-items-center">
-                                    <button class="action-login-btn position-relative">
+                                    <button class="action-login-btn position-relative" onclick="window.location.href='/dangnhap'">
                                         Đăng nhập
                                     </button>
-                                    <button class="action-register-btn position-relative">
+                                    <button class="action-register-btn position-relative" onclick="window.location.href='/dangky'">
                                         Đăng ký
                                     </button>
                                 </div>
@@ -219,7 +219,7 @@
             <ion-icon name="grid-outline" class="bottom-nav-icon"></ion-icon>
             <span>Danh mục</span>
         </div>
-        <a href="/account#orders" class="bottom-nav-link bottom-nav-promotion d-flex flex-column align-items-center justify-content-center">
+        <a href="/taikhoan#orders" class="bottom-nav-link bottom-nav-promotion d-flex flex-column align-items-center justify-content-center">
             <ion-icon name="clipboard-outline" class="bottom-nav-icon"></ion-icon>
             <span>Đơn hàng</span>
         </a>
@@ -229,14 +229,14 @@
         </a>
         {% if user.is_authenticated %}
 
-            <a href="/account" class="bottom-nav-link d-flex flex-column align-items-center justify-content-center">
+            <a href="/taikhoan" class="bottom-nav-link d-flex flex-column align-items-center justify-content-center">
                 <ion-icon name="person-outline" class="bottom-nav-icon"></ion-icon>
                 <span>{{user.username}}</span>
             </a>
         {% else %}
-            <a href="javascript:void(0)" class="bottom-nav-link bottom-nav-account d-flex flex-column align-items-center justify-content-center">
+            <a href="/dangnhap" class="bottom-nav-link bottom-nav-account d-flex flex-column align-items-center justify-content-center">
                 <ion-icon name="person-outline" class="bottom-nav-icon"></ion-icon>
-                <span>Tài khoản</span>
+                <span>Đăng nhập</span>
             </a>
         {% endif %}
     </nav>
