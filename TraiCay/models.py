@@ -43,7 +43,10 @@ class HoaDon(models.Model):
     MaHD = models.CharField(max_length=10, primary_key=True)
     MaKH = models.ForeignKey(KhachHang, on_delete=models.SET_NULL, null=True)
     NgayMua = models.DateField()
-    TongTien = models.DecimalField(max_digits=10, decimal_places=2)
+    TongTien = models.DecimalField(max_digits=10, decimal_places=2),
+    DiaChiGiao = models.CharField(max_length=100, null=True),
+    PhuongThucThanhToan = models.CharField(max_length=10, null=True),
+    TrangThai = models.CharField(max_length=100, null=True)
 
 class ChiTietHoaDon(models.Model):
     MaHD = models.ForeignKey(HoaDon, on_delete=models.SET_NULL, null=True)

@@ -1,12 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login
 
-from .models import SanPham, HinhAnhSP, Loai, ChiTietKho, Slider
+import json
+
+from .models import *
 from .forms import FormDangKy
 
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import LoaiSerializer, SanPhamSerializer
@@ -165,7 +168,18 @@ def sanpham(request, id):
     return render(request, 'sanpham.html', {'Loai': loai, 'Fruit': sanpham, 'Quantity': quantity, 'images': images})
 
 def giohang(request):
-
+    user = request.user
+    if user and user.is_authenticated:
+        giohang = GioHang.objects.filter(user = user)
+        return render(request, 'giohang.html', {'Cart': giohang})
+    else:
+        session_cart = request.session.get('cart', None)
+        cart = []
+        if session_cart:
+            for c in session_cart:
+                sanpham = get_object_or_404(SanPham, pk=c['MaSP'])
+                cart.append({'SanPham': sanpham, 'SoLuong': c['SoLuong']})
+            return render(request, 'giohang.html', {'Cart': cart})
     return render(request, 'giohang.html')
 
 ### API #########################################
@@ -186,7 +200,39 @@ def getTimKiem(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def cap_nhat_so_luong(request):
+    a = 1
+    
 @api_view(['POST'])
 def them_gio_hang(request):
-    msp = request.POST.get('id')
+    msp = request.data.get('id')
     sanpham = get_object_or_404(SanPham, pk=msp)
+
+    user = request.user
+    if user and user.is_authenticated:
+        try:
+            giohang = GioHang.objects.get(user=user, SanPham=sanpham)
+            giohang.SoLuong += 1
+            giohang.save()
+        except GioHang.DoesNotExist:
+            GioHang.objects.create(user=user, SanPham=sanpham, SoLuong=1)
+    else:
+        is_exist = False
+        session_cart = request.session.get('cart', [])
+        if session_cart:
+            for c in session_cart:
+                if c['MaSP'] == sanpham.MaSP:
+                    c['SoLuong'] += 1
+                    is_exist = True
+                    break
+        
+        if not is_exist:
+            if not session_cart:
+                session_cart = []
+
+            session_cart.append({'MaSP': sanpham.MaSP, 'SoLuong': 1})
+
+        request.session['cart'] = session_cart
+
+    return Response(status=status.HTTP_200_OK)

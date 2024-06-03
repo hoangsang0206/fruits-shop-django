@@ -15,4 +15,5 @@ urlpatterns = [
 
     path('api/loai/', views.getLoai, name='GetLoai'),
     path('api/timkiem/', views.getTimKiem, name='GetTimKiem'),
+    path('api/giohang/them', views.them_gio_hang, name='ThemGioHang')
 ]

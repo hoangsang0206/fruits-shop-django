@@ -30,15 +30,16 @@ $(document).ready(() => {
 
 //-Add product to cart ------------------------------------
 $('.add-to-cart-btn, .buy-action-btn').click(function() {
-    const productID = $(this).data('product-id');
+    const productID = $(this).data('product');
 
     if (productID.length > 0) {
         showWebLoader();
         $.ajax({
             type: 'POST',
-            url: '/api/giohang/them',
+            url: '/api/giohang/them/',
             data: {
-                id: productID
+                id: productID,
+                csrfmiddlewaretoken: $('#csrf_token_input').val()
             },
             success: (respone) => {
                 if (respone.success) {
@@ -56,13 +57,14 @@ $('.buy-action-btn').click(() => {
 
 $('.btn-add-to-cart').click(function() {
     const productID = $(this).data('product');
-
+    
     if (productID.length > 0) {
         $.ajax({
             type: 'POST',
             url: '/api/giohang/them',
             data: {
-                id: productID
+                id: productID,
+                csrfmiddlewaretoken: $('#csrf_token_input').val()
             },
             success: (respone) => {
                 if (respone.success) {

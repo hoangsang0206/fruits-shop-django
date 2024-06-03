@@ -2,6 +2,7 @@
 {% block title %}Giỏ hàng{% endblock %}
 
 {% block content %}
+    {% load static %}
     <section class="cart-wrapper">
         <div class="container-fluid">
             <div class="breadcrumb-cart">
@@ -41,9 +42,9 @@
                             {% for cart in Cart %} 
                                 <div class="cart-product-box d-flex">
                                     <div class="cart-product-left d-flex flex-column align-items-center gap-2">
-                                        <a href="/product/@item.Product.ProductID">
+                                        <a href="/sanpham/{{cart.SanPham.MaSP}}">
                                             <div class="cart-img">
-                                                <img src="@(item.Product.ImgSrc != null ? item.Product.ImgSrc : "/images/no-image.jpg")" alt="" />
+                                                <img src="{% static 'images/no-image.jpg' %}" alt="" />
                                             </div>
                                         </a>
                                         <a href="/cart/deletecartitem?line=@i" class="delete-cart-item d-flex gap-2 align-items-center">
@@ -53,30 +54,22 @@
                                     </div>
                                     <div class="cart-product-right d-flex justify-content-between">
                                         <div class="cart-product-name">
-                                            <a href="/product/@item.Product.ProductID">
-                                                <h5>@item.Product.ProductName</h5>
+                                            <a href="/sanpham/{{cart.SanPham.MaSP}}">
+                                                <h5>{{cart.SanPham.TenSP}}</h5>
                                             </a>
                                         </div>
                                         <div class="cart-product-price-quantity">
                                             <div class="cart-product-price">
-                                                <h5>@(Convert.ToDecimal(item.Product.Price).ToString("##,###", ViewBag.cul))đ</h5>
-                                                @if (item.Product.Cost > item.Product.Price)
-                                                {
-                                                    <h6>@(Convert.ToDecimal(item.Product.Cost).ToString("##,###", ViewBag.cul))đ</h6>
-                                                }
-                                                else
-                                                    {
-                                                        <h6 style="visibility: hidden">None</h6>
-                                                    }
+                                                <h5>{{cart.SanPham.DonGia|floatformat:"0"}}đ</h5>
                                             </div>
                                             <div class="cart-product-quantity">
                                                 <button type="button" class="update-quantity decrease-quantity"
-                                                        data-product-btn="@item.Product.ProductID" data-update="decrease">
+                                                        data-product-btn="{{cart.SanPham.MaSP}}" data-update="decrease">
                                                     <i class="fa-solid fa-minus"></i>
                                                 </button>
-                                                <input type="number" name="quantity" value="@item.Quantity" data-product="@item.Product.ProductID" min="1" />
+                                                <input type="number" name="quantity" value="{{cart.SoLuong}}" data-product="{{cart.SanPham.MaSP}}" min="1" />
                                                 <button type="button" class="update-quantity increase-quantity"
-                                                        data-product-btn="@item.Product.ProductID" data-update="increase">
+                                                        data-product-btn="{{cart.SanPham.MaSP}}" data-update="increase">
                                                     <i class="fa-solid fa-plus"></i>
                                                 </button>
                                             </div>
@@ -93,7 +86,7 @@
                             </div>
                             <div class="summary-price">
                                 <span class="s-price-title">Tổng tiền: </span>
-                                <span class="total-price">@(totalPrice.ToString("##,###", ViewBag.cul))đ</span>
+                                <span class="total-price">0đ</span>
                             </div>
                             {% if user.is_authenticated %}
                                 <button class="summary-action cart-summary-btn" onclick="window.location.href='#cart-order-box'">
