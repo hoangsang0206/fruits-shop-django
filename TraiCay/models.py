@@ -13,6 +13,16 @@ class SanPham(models.Model):
     DonGia = models.DecimalField(max_digits=10, decimal_places=2)
     MoTa = models.TextField()
 
+    def HinhAnh(self):
+        hinhanhsp = self.hinhanhsp_set.first()
+        return hinhanhsp.HinhAnh if hinhanhsp else None
+
+    def TatCaHinhAnh(self):
+        return self.hinhanhsp_set.all()
+
+    def TonKho(self):
+        return sum([chitiet.SoLuongTon for chitiet in self.chitietkho_set.all()])
+
 class HinhAnhSP(models.Model):
     SanPham = models.ForeignKey(SanPham, on_delete=models.SET_NULL, null=True)
     HinhAnh = models.TextField()

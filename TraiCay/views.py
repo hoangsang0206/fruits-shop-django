@@ -34,19 +34,9 @@ def home(request):
     Home_Fruits = []
     DSLoai = Loai.objects.all()[:7]
     for loai in DSLoai:
-        fruits = []
         sanpham = SanPham.objects.filter(MaLoai = loai)
-        for sp in sanpham:
-            spkho = ChiTietKho.objects.filter(MaSP=sp)
-            quantity = 0
-            if spkho:
-                for spk in spkho:
-                    quantity += spk.SoLuongTon
-
-            fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
-
-        _Fruits = {'loai': loai, 'fruits': fruits}
-        Home_Fruits.append(_Fruits)
+        fruits = {'loai': loai, 'fruits': sanpham}
+        Home_Fruits.append(fruits)
 
     Sliders = Slider.objects.all()
 
@@ -80,18 +70,8 @@ def loc_theo_loai(request, id):
     start_page = current_page - 1 if current_page > 1 else 1
     end_page = current_page + 1 if current_page < num_pages else num_pages
 
-    fruits = []
-    for sp in sanpham_page:
-        spkho = ChiTietKho.objects.filter(MaSP=sp)
-        quantity = 0
-        if spkho:
-            for spk in spkho:
-                quantity += spk.SoLuongTon
-
-        fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
-
     context = {
-        'Fruits': fruits,
+        'Fruits': sanpham_page,
         'current_page': current_page,
         'num_pages': num_pages,
         'page_range': page_range,
@@ -131,19 +111,9 @@ def tim_kiem(request):
     start_page = current_page - 1 if current_page > 1 else 1
     end_page = current_page + 1 if current_page < num_pages else num_pages
 
-    fruits = []
-    for sp in sanpham_page:
-        spkho = ChiTietKho.objects.filter(MaSP=sp)
-        quantity = 0
-        if spkho:
-            for spk in spkho:
-                quantity += spk.SoLuongTon
-
-        fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
-
     context = {
         'value': query,
-        'Fruits': fruits,
+        'Fruits': sanpham_page,
         'current_page': current_page,
         'num_pages': num_pages,
         'page_range': page_range,

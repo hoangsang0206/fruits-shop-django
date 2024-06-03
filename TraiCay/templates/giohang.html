@@ -3,6 +3,7 @@
 
 {% block content %}
     {% load static %}
+    {% load humanize %} 
     <section class="cart-wrapper">
         <div class="container-fluid">
             <div class="breadcrumb-cart">
@@ -39,12 +40,13 @@
                 {% if Cart %}
                     <div class="cart-info d-none form-current" id="cart-info-box">
                         <div class="cart-products-wrapper">
-                            {% for cart in Cart %} 
+                            {% for cart in Cart %}
                                 <div class="cart-product-box d-flex">
                                     <div class="cart-product-left d-flex flex-column align-items-center gap-2">
                                         <a href="/sanpham/{{cart.SanPham.MaSP}}">
                                             <div class="cart-img">
-                                                <img src="{% static 'images/no-image.jpg' %}" alt="" />
+                                                <img src="{% if cart.SanPham.HinhAnh %} {{cart.SanPham.HinhAnh}}
+                                                {% else %} {% static 'images/no-image.jpg' %} {% endif %}" alt="" />
                                             </div>
                                         </a>
                                         <a href="/cart/deletecartitem?line=@i" class="delete-cart-item d-flex gap-2 align-items-center">
@@ -60,7 +62,7 @@
                                         </div>
                                         <div class="cart-product-price-quantity">
                                             <div class="cart-product-price">
-                                                <h5>{{cart.SanPham.DonGia|floatformat:"0"}}đ</h5>
+                                                <h5>{{cart.SanPham.DonGia|floatformat:"0"|intcomma}}đ</h5>
                                             </div>
                                             <div class="cart-product-quantity">
                                                 <button type="button" class="update-quantity decrease-quantity"
