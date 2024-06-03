@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.core.paginator import Paginator
 from .models import SanPham, HinhAnhSP, Loai, ChiTietKho, Slider
 
 from rest_framework.response import Response
@@ -34,13 +35,35 @@ def home(request):
     return render(request, 'home.html', {'Home_Fruits' : Home_Fruits, 'Sliders': Sliders})
 
 def loc_theo_loai(request, id):
+    loai = None
     if id == 'all':
         sanpham = SanPham.objects.all()
     else:
         loai = get_object_or_404(Loai, pk=id)
         sanpham = SanPham.objects.filter(MaLoai = loai)
+
+    # phân trang
+    limit = 20
+    page = request.GET.get('page', 1)
+
+    sanpham_paginator = Paginator(sanpham, limit)
+    try:
+        sanpham_page = sanpham_paginator.get_page(page)
+    except PageNotAnInteger:
+        sanpham_page = sanpham_paginator.get_page(1)
+    except EmtyPage:
+        sanpham_page = sanpham_paginator.get_page(sanpham_paginator.num_pages)
+
+    current_page = sanpham_page.number
+    num_pages = sanpham_paginator.num_pages
+    page_range = sanpham_paginator.page_range
+    previous_page = current_page - 1
+    next_page = current_page + 1
+    start_page = current_page - 1 if current_page > 1 else 1
+    end_page = current_page + 1 if current_page < num_pages else num_pages
+
     fruits = []
-    for sp in sanpham:
+    for sp in sanpham_page:
         spkho = ChiTietKho.objects.filter(MaSP=sp)
         quantity = 0
         if spkho:
@@ -49,7 +72,19 @@ def loc_theo_loai(request, id):
 
         fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
 
-    return render(request, 'loai.html',{'Fruits': fruits} if id == 'all' else {'Loai': loai, 'Fruits': fruits})
+    context = {
+        'Fruits': fruits,
+        'current_page': current_page,
+        'num_pages': num_pages,
+        'page_range': page_range,
+        'previous_page': previous_page,
+        'next_page': next_page,
+        'start_page': start_page,
+        'end_page': end_page,
+        'Loai': loai
+    }
+
+    return render(request, 'loai.html', context)
 
 def tim_kiem(request):
     query = request.GET.get('q')
@@ -57,8 +92,29 @@ def tim_kiem(request):
         sanpham = SanPham.objects.filter(TenSP__icontains=query)
     else:
         sanpham = SanPham.objects.all()
+
+    # phân trang
+    limit = 20
+    page = request.GET.get('page', 1)
+
+    sanpham_paginator = Paginator(sanpham, limit)
+    try:
+        sanpham_page = sanpham_paginator.get_page(page)
+    except PageNotAnInteger:
+        sanpham_page = sanpham_paginator.get_page(1)
+    except EmtyPage:
+        sanpham_page = sanpham_paginator.get_page(sanpham_paginator.num_pages)
+
+    current_page = sanpham_page.number
+    num_pages = sanpham_paginator.num_pages
+    page_range = sanpham_paginator.page_range
+    previous_page = current_page - 1
+    next_page = current_page + 1
+    start_page = current_page - 1 if current_page > 1 else 1
+    end_page = current_page + 1 if current_page < num_pages else num_pages
+
     fruits = []
-    for sp in sanpham:
+    for sp in sanpham_page:
         spkho = ChiTietKho.objects.filter(MaSP=sp)
         quantity = 0
         if spkho:
@@ -67,7 +123,19 @@ def tim_kiem(request):
 
         fruits.append({'fruit': sp, 'quantity': quantity, 'images': HinhAnhSP.objects.filter(SanPham = sp)})
 
-    return render(request, 'timkiem.html', {'value': query, 'Fruits': fruits})
+    context = {
+        'value': query,
+        'Fruits': fruits,
+        'current_page': current_page,
+        'num_pages': num_pages,
+        'page_range': page_range,
+        'previous_page': previous_page,
+        'next_page': next_page,
+        'start_page': start_page,
+        'end_page': end_page,
+    }
+
+    return render(request, 'timkiem.html', context)
 
 def sanpham(request, id):
     sanpham = get_object_or_404(SanPham,  pk=id)

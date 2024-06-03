@@ -28,7 +28,7 @@
             </li>
         </ul>
     </section>
-
+    <h1>{{end_page}}</h1>
     <section class="filter-products">
         <div class="filter-box d-flex justify-content-between mt-2 mb-3 gap-2">
             <div class="filter-button-list d-flex flex-wrap gap-2 align-items-center">   
@@ -123,10 +123,55 @@
         {% endif %}
 
         <div class="pagination-box d-flex justify-content-center align-items-center">
+        {% if num_pages > 1 %}
+            <ul class="pagination d-flex align-items-center p-0 m-0">
+                {% if current_page > 1 %}
+                    <li class="pagination-item">
+                        <a href="?page=1">
+                            <img src="{% static 'images/icons/double-chevron-left.png' %}" alt="" class="pagination-icon" />
+                        </a>
+                    </li>
+                    <li class="pagination-item">
+                        <a href="?page={{ previous_page }}">
+                            <img src="{% static 'images/icons/chevron-left.png' %}" alt="" class="pagination-icon" />
+                        </a>
+                    </li>
+                {% endif %}
 
+                {% if current_page > 2 %}
+                    <li class="pagination-item">...</li>
+                {% endif %}
+
+                {% for page_num in page_range %}
+                    {% if page_num >= start_page and page_num <= end_page %}
+                        <li class="pagination-item {% if page_num == current_page %}active{% endif %}">
+                            <a href="?page={{ page_num }}">
+                                {{ page_num }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if current_page < num_pages|add:"-1" %}
+                    <li class="pagination-item">...</li>
+                {% endif %}
+
+                {% if current_page < num_pages %}
+                    <li class="pagination-item">
+                        <a href="?page={{ next_page }}">
+                            <img src="{% static 'images/icons/chevron-right.png' %}" alt="" class="pagination-icon" />
+                        </a>
+                    </li>
+                    <li class="pagination-item">
+                        <a href="?page={{ num_pages }}">
+                            <img src="{% static 'images/icons/double-chevron-right.png' %}" alt="" class="pagination-icon" />
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
         </div>
-
     </section>
 
     <section class="side-overlay"></section>
-    {% endblock %}
+{% endblock %}
