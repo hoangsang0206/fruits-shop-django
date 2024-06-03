@@ -74,7 +74,6 @@ class ChiTietKho(models.Model):
     MaKho = models.ForeignKey(Kho, on_delete=models.SET_NULL, null=True)
     MaSP = models.ForeignKey(SanPham, on_delete=models.SET_NULL, null=True)
     SoLuongTon = models.IntegerField(default=0)
-    NgayHetHan = models.DateField()
 
 class PhieuNhapHang(models.Model):
     MaPNH = models.CharField(max_length=10, primary_key=True)
@@ -92,6 +91,6 @@ class Slider(models.Model):
     Link = models.TextField()
 
 class GioHang(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     SanPham = models.ForeignKey(SanPham, on_delete=models.CASCADE, null=False)
     SoLuong = models.IntegerField(default=0, null=False)

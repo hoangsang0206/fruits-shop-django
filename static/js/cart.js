@@ -11,15 +11,13 @@ function hideWebLoader() {
 //Update quantity of item in cart to header
 function updateCartCount() {
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: '/api/giohang/capnhat',
         success: (data) => {
-            $('.cart-count').empty();
-            $('.cart-count').append(data.count);
+            $('.cart-count').html(data.tong);
         },
         error: () => {
-            $('.cart-count').empty();
-            $('.cart-count').append(0);
+            $('.cart-count').html(0);
         }
     })
 }
@@ -30,22 +28,20 @@ $(document).ready(() => {
 
 //-Add product to cart ------------------------------------
 $('.add-to-cart-btn, .buy-action-btn').click(function() {
-    const productID = $(this).data('product');
+    const productID = $(this).data('product-id');
 
     if (productID.length > 0) {
         showWebLoader();
         $.ajax({
             type: 'POST',
-            url: '/api/giohang/them/',
+            url: '/api/giohang/them',
             data: {
                 id: productID,
                 csrfmiddlewaretoken: $('#csrf_token_input').val()
             },
             success: (respone) => {
-                if (respone.success) {
-                    setTimeout(hideWebLoader, 500);
-                    updateCartCount();
-                }
+                setTimeout(hideWebLoader, 500);
+                updateCartCount();
             }
         })
     }   
@@ -67,9 +63,7 @@ $('.btn-add-to-cart').click(function() {
                 csrfmiddlewaretoken: $('#csrf_token_input').val()
             },
             success: (respone) => {
-                if (respone.success) {
-                    updateCartCount();
-                }
+                updateCartCount();
             }
         })
     }

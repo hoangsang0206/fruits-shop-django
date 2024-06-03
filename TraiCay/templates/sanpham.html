@@ -29,12 +29,12 @@
             <div class="row">
                 <div class="col-lg-5 col-md-12 col-sm-12 col-12 product-detail-box product-gallery">
                     <div class="slider-main">
-                        {% for img in images %}
+                        {% for img in Fruit.TatCaHinhAnh %}
                             <img src="{{img.HinhAnh}}" alt="" />
                         {% endfor %}
                     </div>
                     <div class="slider-nav mt-3">
-                        {% for img in images %}
+                        {% for img in Fruit.TatCaHinhAnh %}
                             <div class="slick-slider-item">
                                 <img src="{{img.HinhAnh}}" alt="" />
                             </div>
@@ -49,13 +49,13 @@
                         <h2>{{Fruit.DonGia|floatformat:"0"|intcomma}}đ</h2>
                     </div>
                     <div class="product-action d-flex my-2 align-items-center">
-                        {% if Quantity > 0 %}
+                        {% if Fruit.TonKho > 0 %}
                             <div class="buy-action d-flex gap-3">
-                                <button class="buy-action-btn" data-product-id="@Model.ProductID">
+                                <button class="buy-action-btn" data-product-id="{{Fruit.MaSP}}">
                                     <h4>MUA NGAY</h4>
                                     <span>Giao tận nơi hoặc nhận tại cửa hàng</span>
                                 </button>
-                                <button class="add-to-cart-btn" data-product-id="@Model.ProductID">
+                                <button class="add-to-cart-btn" data-product-id="{{Fruit.MaSP}}">
                                     <i class="fa-solid fa-cart-plus"></i>
                                 </button>
                             </div>
@@ -119,29 +119,29 @@
                     {% for fruit in OtherFruits %}
                         <div class="slick-slider-item">
                             <div class="product-box">
-                                <a href="/sanpham/{{fruit.fruit.MaSP}}" class="product-link">
+                                <a href="/sanpham/{{fruit.MaSP}}" class="product-link">
                                     <div class="product-image lazy-loading">
-                                        <img lazy-src="{% if fruit.images %} {{fruit.images.0.HinhAnh}} {% else %} {% static 'images/no-images.jpg' %} {% endif %}" alt="" class="product-img">
+                                        <img lazy-src="{% if fruit.HinhANh %} {{fruit.HinhAnh}} {% else %} {% static 'images/no-images.jpg' %} {% endif %}" alt="" class="product-img">
                                     </div>
                                 </a>
-                                {% if fruit.quantity <= 0 %}
+                                {% if fruit.TonKho <= 0 %}
                                     <div class="out-of-stock mt-1 text-center">
                                         Hết hàng
                                     </div>
                                 {% endif %}
                                 <a href="/sanpham/{{fruit.MaSP}}" class="product-link">
                                     <div class="product-name">
-                                        {{fruit.fruit.TenSP}}
+                                        {{fruit.TenSP}}
                                     </div>
                                 </a>
 
                                 <div class="product-price d-flex align-items-center">
-                                    <span>{{ fruit.fruit.DonGia|floatformat:"0"|intcomma }}đ</span>
+                                    <span>{{ fruit.DonGia|floatformat:"0"|intcomma }}đ</span>
                                 </div>
-                                <button class="view-product" onclick="window.location.href='/sanpham/{{fruit.fruit.MaSP}}'">
+                                <button class="view-product" onclick="window.location.href='/sanpham/{{fruit.MaSP}}'">
                                     <i class="fa-regular fa-eye"></i>
                                 </button>
-                                <button class="btn-add-to-cart" data-product="{{fruit.fruit.MaSP}}">
+                                <button class="btn-add-to-cart" data-product="{{fruit.MaSP}}">
                                     <i class="fa-solid fa-cart-plus"></i>
                                 </button>
                             </div>
@@ -150,5 +150,6 @@
                 </div>
             </div>
         {% endif %}
+        <input type="hidden" value="{{csrf_token}}" id="csrf_token_input"  />
     </section>
 {% endblock %}

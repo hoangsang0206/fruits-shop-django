@@ -128,28 +128,28 @@ def tim_kiem(request):
 def sanpham(request, id):
     sanpham = get_object_or_404(SanPham,  pk=id)
     loai = sanpham.MaLoai
-    images = HinhAnhSP.objects.filter(SanPham = sanpham)
     spkho = ChiTietKho.objects.filter(MaSP=sanpham)
-    quantity = 0
-    if spkho:
-        for spk in spkho:
-            quantity += spk.SoLuongTon
 
-    return render(request, 'sanpham.html', {'Loai': loai, 'Fruit': sanpham, 'Quantity': quantity, 'images': images})
+    return render(request, 'sanpham.html', {'Loai': loai, 'Fruit': sanpham})
 
 def giohang(request):
     user = request.user
     if user and user.is_authenticated:
         giohang = GioHang.objects.filter(user = user)
-        return render(request, 'giohang.html', {'Cart': giohang})
+        total = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
+        return render(request, 'giohang.html', {'Cart': giohang, 'TongTien': total})
     else:
         session_cart = request.session.get('cart', None)
         cart = []
+        total = 0
         if session_cart:
             for c in session_cart:
                 sanpham = get_object_or_404(SanPham, pk=c['MaSP'])
+                total += sanpham.DonGia * c['SoLuong']
                 cart.append({'SanPham': sanpham, 'SoLuong': c['SoLuong']})
-            return render(request, 'giohang.html', {'Cart': cart})
+            return render(request, 'giohang.html', {'Cart': cart, 'TongTien': total})
+
+
     return render(request, 'giohang.html')
 
 ### API #########################################
@@ -172,12 +172,23 @@ def getTimKiem(request):
 
 @api_view(['GET'])
 def cap_nhat_so_luong(request):
-    a = 1
+    tong = 0
+
+    user = request.user
+    if user and user.is_authenticated:
+        giohang = GioHang.objects.filter(user=user)
+        tong = len(giohang)
+    else:
+        session_cart = request.session.get('cart', [])
+        tong = len(session_cart)
+    return Response({'tong': tong}, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
 def them_gio_hang(request):
     msp = request.data.get('id')
     sanpham = get_object_or_404(SanPham, pk=msp)
+    if sanpham.TonKho() <= 0:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     user = request.user
     if user and user.is_authenticated:
