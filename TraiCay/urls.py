@@ -19,6 +19,8 @@ urlpatterns = [
     path('dathang/thanhtoan', views.thanh_toan, name='ThanhToan'),
     path('dathang/thanhcong', views.thanh_toan_thanh_cong, name='TToanThanhCong'),
     path('dathang/thatbai', views.thanh_toan_that_bai, name='TToanThatBai'),
+    path('hoadon/<str:hd>', views.chi_tiet_hd, name='ChiTietHD'),
+    path('hoadon/xoa/<str:hd>', views.xoa_don_hang, name='XoaDonHang'),
 
     path('api/loai/', views.getLoai, name='GetLoai'),
     path('api/timkiem/', views.getTimKiem, name='GetTimKiem'),

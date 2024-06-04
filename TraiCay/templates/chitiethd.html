@@ -1,10 +1,135 @@
 {% extends 'layout/base.html' %}
-{% block title %}Chi tiết {{HD.MaHD}{% endblock %}
+{% block title %}Chi tiết {{HD.MaHD}}{% endblock %}
 
 {% block content %}
     {% load static %}
     {% load humanize %}
 
-    
+    <section class="breadcrumb">
+        <ul class="breadcrumb-list d-flex">
+            <ul class="breadcrumb-list d-flex">
+                <li class="breadcrumb-item">
+                    <a href="/">
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/taikhoan#orders">
+                        Hoá đơn
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <span>{{HD.MaHD}}</span>
+                </li>
+            </ul>
+        </ul>
+    </section>
 
+    <section class="order-action d-flex gap-3 mb-2">
+        <button class="print-order">
+            <i class="fa-solid fa-print me-1"></i>
+            <span>In hóa đơn</span>
+        </button>
+        <button class="delete-order bg-danger" onclick="window.location.href='/hoadon/xoa/{{HD.MaHD}}'">
+            <i class="fa-solid fa-print me-1"></i>
+            <span>Hủy đơn hàng</span>
+        </button>
+    </section>
+
+    <section class="order-detail">
+        <div class="order-info-wrapper d-flex gap-3">
+            <div class="order-info">
+                <div class="detail-header">
+                    <h5>Thông tin đơn hàng - {{HD.MaHD}}</h5>
+                </div>
+                <hr />
+                <div class="order-info-box">
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Mã đơn hàng: </span>
+                        <p>{{HD.MaHD}}</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Ngày đặt hàng: </span>
+                        <p>{{HD.NgayMua|date:"d/m/Y"}}</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Địa chỉ giao hàng: </span>
+                        <p>{% if HD.DiaChiGiao != 'Store' %} {{HD.DiaChiGiao}} {% else %} Nhận tại cửa hàng {% endif %}</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Cách thức thanh toán: </span>
+                        <p>{{HD.PhuongThucThanhToan}}</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Ghi chú: </span>
+                        <p>.</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Tổng tiền: </span>
+                        <p>{{HD.TongTien|floatformat:"0"|intcomma}}đ</p>
+                    </div>
+                </div>
+            </div>
+            <div class="order-info">
+                <div class="detail-header">
+                    <h5>Thông tin khác hàng</h5>
+                </div>
+                <hr />
+                <div class="order-info-box">
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Mã khách hàng: </span>
+                        <p>{{HD.MaKH.MaKH}}</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Họ tên: </span>
+                        <p>{{HD.MaKH.TenKH}}</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Số điện thoại: </span>
+                        <p>{{HD.MaKH.SDT}}</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Email: </span>
+                        <p>{{HD.MaKH.Email}}</p>
+                    </div>
+                    <div class="order-info-item d-flex gap-2">
+                        <span>Địa chỉ: </span>
+                        <p>{{HD.MaKH.DiaChi}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="order-detail-wrapper">
+            <div class="order-detail-box">
+                <div class="detail-header">
+                    <h5>Chi tiết đơn hàng</h5>
+                </div>
+                <hr />
+                <div class="order-detail-items">
+                    <table class="table">
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Mã SP</th>
+                            <th>Tên SP</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    {% for ct in ChiTiet %}
+                        <tr>
+                            <td>
+                                <img style="width: 3.5rem;" src="{% if ct.MaSP.HinhAnh %} {{ct.MaSP.HinhAnh}} {% else %} {% static 'images/no-image.jpg' %} {% endif %}" alt="">
+                            </td>
+                            <td>{{ct.MaSP.MaSP}}</td>
+                            <td>{{ct.MaSP.TenSP}}</td>
+                            <td>{{ct.SoLuong}}</td>
+                            <td>{{ct.MaSP.DonGia|floatformat:"0"|intcomma}}đ</td>
+                            <td>{{ct.DonGia|floatformat:"0"|intcomma}}đ</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

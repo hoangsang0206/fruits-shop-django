@@ -253,8 +253,11 @@ def thanh_toan(request):
     if not order_temp:
         return Response({'success': False, 'url': '/giophang'}, status=status.HTTP_200_OK)
 
-    order_id = random_ma_donhang()
     payment_med = request.data.get('payment_med')
+
+    if payment_med != 'COD':
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    order_id = random_ma_donhang()
     address = order_temp['shipmed'] if order_temp['shipmed'] != 'COD' else order_temp['address']
     total_price = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
 
@@ -331,13 +334,36 @@ def taikhoan(request):
         pass
     return render(request, 'taikhoan.html')
 
-def chi_tiet_hd(request):
+def chi_tiet_hd(request, hd):
     user = request.user
     if not user or not user.is_authenticated:
-        return HttpResponseRedirect('/taikhoan#orders')
+        return HttpResponseRedirect('/dangnhap')
     
+    hoadon = HoaDon.objects.get(MaHD=hd)
+    chitiethd = ChiTietHoaDon.objects.filter(MaHD=hoadon)
 
-    return render(request, 'chitiethd.html')
+    return render(request, 'chitiethd.html', {'HD': hoadon, 'ChiTiet': chitiethd})
+
+def xoa_don_hang(request, hd):
+    user = request.user
+    if not user or not user.is_authenticated:
+        return HttpResponseRedirect('/dangnhap')
+
+    try:
+        kh = KhachHang.objects.get(user=user)
+        hd = HoaDon.objects.get(MaKH= kh, MaHD=hd)
+        chitiet = ChiTietHoaDon.objects.filter(MaHD=hd)
+
+        for ct in chitiet:
+            ct_kho = ChiTietKho.objects.get(MaSP=ct.MaSP)
+            ct_kho.SoLuongTon += ct.SoLuong
+            ct_kho.save()
+            ct.delete()
+        hd.delete()
+
+        return HttpResponseRedirect('/taikhoan#orders')
+    except Exception:
+        return HttpResponseRedirect('/')
     
 ### API ###################################################################################
 @api_view(['GET'])

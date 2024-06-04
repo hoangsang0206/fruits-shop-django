@@ -310,7 +310,7 @@ $('.order-search-form').submit((e) => {
                     <td>
                         <div class="order-status order-waiting">${order.TrangThai}</div>
                     </td>
-                    <td> <a href="#">Chi tiết</a></td>
+                    <td> <a href="/hoadon/${order.MaHD}">Chi tiết</a></td>
                 </tr>`;
             })
 
