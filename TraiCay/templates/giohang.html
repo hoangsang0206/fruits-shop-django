@@ -49,7 +49,7 @@
                                                 {% else %} {% static 'images/no-image.jpg' %} {% endif %}" alt="" />
                                             </div>
                                         </a>
-                                        <a href="/cart/deletecartitem?line=@i" class="delete-cart-item d-flex gap-2 align-items-center">
+                                        <a href="javascript:void(0)" data-product="{{cart.SanPham.MaSP}}" class="delete-cart-item d-flex gap-2 align-items-center">
                                             <i class="fa-regular fa-trash-can"></i>
                                             <span>Xóa</span>
                                         </a>
@@ -196,5 +196,6 @@
                 {% endif %}
             </div>
         </div>
+        <input type="hidden" value="{{csrf_token}}" id="csrf_token_input"  />
     </section>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
 from django.contrib.auth import views as auth_views
+
+from . import views
 
 urlpatterns = [
     path('', views.home, name='TrangChu'),
@@ -16,5 +17,7 @@ urlpatterns = [
     path('api/loai/', views.getLoai, name='GetLoai'),
     path('api/timkiem/', views.getTimKiem, name='GetTimKiem'),
     path('api/giohang/them', views.them_gio_hang, name='ThemGioHang'),
-    path('api/giohang/capnhat', views.cap_nhat_so_luong, name='CapNhatSoLuong'),
+    path('api/giohang/capnhat', views.get_so_luong, name='GetSoLuong'),
+    path('api/giohang/xoa', views.xoa_sanpham_gio_hang, name='XoaGioHang'),
+    path('api/giohang/capnhatsoluong', views.cap_nhat_so_luong, name='CapNhatSoLuong'),
 ]

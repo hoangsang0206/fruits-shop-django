@@ -136,6 +136,11 @@ def giohang(request):
     user = request.user
     if user and user.is_authenticated:
         giohang = GioHang.objects.filter(user = user)
+        for gh in giohang:
+            if gh.SanPham.TonKho() <= 0:
+                gh.delete()
+
+        giohang = GioHang.objects.filter(user = user)
         total = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
         return render(request, 'giohang.html', {'Cart': giohang, 'TongTien': total})
     else:
@@ -145,10 +150,13 @@ def giohang(request):
         if session_cart:
             for c in session_cart:
                 sanpham = get_object_or_404(SanPham, pk=c['MaSP'])
-                total += sanpham.DonGia * c['SoLuong']
-                cart.append({'SanPham': sanpham, 'SoLuong': c['SoLuong']})
+                if sanpham.TonKho() <= 0:
+                    session_cart.remove(c)
+                    request.session['cart'] = session_cart
+                else:
+                    total += sanpham.DonGia * c['SoLuong']
+                    cart.append({'SanPham': sanpham, 'SoLuong': c['SoLuong']})
             return render(request, 'giohang.html', {'Cart': cart, 'TongTien': total})
-
 
     return render(request, 'giohang.html')
 
@@ -171,7 +179,7 @@ def getTimKiem(request):
 
 
 @api_view(['GET'])
-def cap_nhat_so_luong(request):
+def get_so_luong(request):
     tong = 0
 
     user = request.user
@@ -217,3 +225,110 @@ def them_gio_hang(request):
         request.session['cart'] = session_cart
 
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def xoa_sanpham_gio_hang(request):
+    msp = request.data.get('id')
+    sanpham = get_object_or_404(SanPham, pk=msp)
+
+    user = request.user
+    if user and user.is_authenticated:
+        giohang = GioHang.objects.get(user=user, SanPham=sanpham)
+        if giohang:
+            giohang.delete()
+    else:
+        session_cart = request.session.get('cart', [])
+        if session_cart:
+            for c in session_cart:
+                if c['MaSP'] == sanpham.MaSP:
+                    session_cart.remove(c)
+                    request.session['cart'] = session_cart
+                    break
+
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def cap_nhat_so_luong(request):
+    msp = request.data.get('id')
+    sanpham = get_object_or_404(SanPham, pk=msp)
+    update_type = request.data.get('type')
+    user = request.user
+
+    total_price = 0
+    res_qty = 0
+
+    if update_type:
+        if user and user.is_authenticated:
+            giohang = GioHang.objects.get(user=user, SanPham=sanpham)
+            if giohang:
+                if update_type == 'increase':
+                    giohang.SoLuong += 1
+                    if sanpham.TonKho() < giohang.SoLuong:
+                        giohang.SoLuong = sanpham.TonKho()
+                else:
+                    giohang.SoLuong -= 1
+                    if giohang.SoLuong <= 0:
+                        giohang.SoLuong = 1
+                res_qty = giohang.SoLuong
+                giohang.save()
+
+        else:
+            session_cart = request.session.get('cart', [])
+            if session_cart:
+                for c in session_cart:
+                    if c['MaSP'] == sanpham.MaSP:
+                        if update_type == 'increase':
+                            c['SoLuong'] += 1
+                            if sanpham.TonKho() < c['SoLuong']:
+                                c['SoLuong'] = sanpham.TonKho()
+                        else:
+                            c['SoLuong'] -= 1
+                            if c['SoLuong'] == 0:
+                                c['SoLuong']= 1
+                        request.session['cart'] = session_cart
+                        res_qty = c['SoLuong']
+                        break
+                    
+
+    else:
+        qty = request.data.get('qty')
+        qty = float(qty)
+
+        if user and user.is_authenticated:
+            giohang = GioHang.objects.get(user=user, SanPham=sanpham)
+            if giohang:
+                if sanpham.TonKho() >= qty:
+                    giohang.SoLuong = qty
+                else:
+                    giohang.SoLuong = sanpham.TonKho()
+
+                if giohang.SoLuong <= 0:
+                    giohang.SoLuong = 1
+                giohang.save()
+                res_qty = giohang.SoLuong
+
+        else:
+            session_cart = request.session.get('cart', [])
+            if session_cart:
+                for c in session_cart:
+                    if c['MaSP'] == sanpham.MaSP:
+                        if sanpham.TonKho() >= qty:
+                            c['SoLuong'] = qty
+                        else:
+                            c['SoLuong'] = sanpham.TonKho()
+                        if c['SoLuong'] <= 0:
+                            c['SoLuong'] = 1
+                        request.session['cart'] = session_cart
+                        res_qty = c['SoLuong']
+                        break
+
+    if user and user.is_authenticated:
+        giohang = GioHang.objects.filter(user=user)
+        total_price = sum(gh.SoLuong * gh.SanPham.DonGia for gh in giohang)
+    else:
+        session_cart = request.session.get('cart', [])
+        for c in session_cart:
+            sp = get_object_or_404(SanPham, pk=c['MaSP'])
+            total_price += sp.DonGia * c['SoLuong']
+
+    return Response({'total': total_price, 'qty': res_qty}, status=status.HTTP_200_OK)

@@ -71,8 +71,7 @@ $('.btn-add-to-cart').click(function() {
 
 //-------------------------------
 $('.not-logged-in').click(() => {
-    $('.login').css('visibility', 'visible');
-    $('.login .form-container').addClass('showForm');
+    window.location.href = '/dangnhap'
 })
 
 //---------------------------------
@@ -148,8 +147,9 @@ $('.update-quantity').click(function() {
     if (productID.length > 0 && updateType.length > 0) {
         showWebLoader();
         $.ajax({
-            type: 'Post',
-            url: '/cart/capnhatsoluong',
+            type: 'PUT',
+            url: '/api/giohang/capnhatsoluong',
+            headers: { "X-CSRFToken": $('#csrf_token_input').val() },
             data: {
                 id: productID,
                 type: updateType
@@ -161,19 +161,6 @@ $('.update-quantity').click(function() {
                 var total = res.total.toLocaleString("vi-VN") + 'đ';
                 $('.total-price').empty();
                 $('.total-price').text(total);
-
-                if (res.error.length > 0) {
-                    $('.cart-error').empty();
-                    $('.cart-error').show();
-                    var str = `<span><i class="fa-solid fa-circle-exclamation"></i>
-                    ${res.error}</span>`;
-                    $('.cart-error').append(str);
-
-                    var timeout = setTimeout(() => {
-                        $('.cart-error').hide()
-                        clearTimeout(timeout);
-                    }, 7000)
-                }
             },
             error: () => { hideWebLoader(); }
         })
@@ -190,11 +177,12 @@ $('input[name="quantity"]').focus((e) => {
         if (newVal != currentVal) {
             showWebLoader();    
             $.ajax({
-                type: 'Post',
-                url: '/cart/updatequantity',
+                type: 'PUT',
+                url: '/api/giohang/capnhatsoluong',
+                headers: { "X-CSRFToken": $('#csrf_token_input').val() },
                 data: {
-                    productID: productID,
-                    qtity: newVal
+                    id: productID,
+                    qty: newVal
                 },
                 success: (res) => {
                     setTimeout(hideWebLoader, 500);
@@ -203,22 +191,29 @@ $('input[name="quantity"]').focus((e) => {
                     var total = res.total.toLocaleString("vi-VN") + 'đ';
                     $('.total-price').empty();
                     $('.total-price').text(total);
-
-                    if (res.error.length > 0) {
-                        $('.cart-error').empty();
-                        $('.cart-error').show();
-                        var str = `<span><i class="fa-solid fa-circle-exclamation"></i>
-                    ${res.error}</span>`;
-                        $('.cart-error').append(str);
-
-                        var timeout = setTimeout(() => {
-                            $('.cart-error').hide()
-                            clearTimeout(timeout);
-                        }, 7000)
-                    }
                 },
                 error: () => { hideWebLoader(); }
             })
         }
     })
+})
+
+
+//-- Delete cart item
+$('.delete-cart-item').click(function() {
+    const productID = $(this).data('product');
+    if (productID.length > 0) {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/giohang/xoa',
+            headers: { "X-CSRFToken": $('#csrf_token_input').val() },
+            data: {
+                id: productID
+            },
+            success: (respone) => {
+                updateCartCount();
+                window.location.href ='/giohang'
+            }
+        })
+    }
 })
