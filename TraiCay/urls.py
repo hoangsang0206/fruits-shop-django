@@ -12,7 +12,8 @@ urlpatterns = [
     path('loai/<str:id>', views.loc_theo_loai, name='LocTheoLoai'),
     path('timkiem/', views.tim_kiem, name='TimKiem'),
     path('sanpham/<str:id>', views.sanpham, name='SanPham'),
-    path('giohang', views.giohang, name='GioHang'),
+    path('giohang/', views.giohang, name='GioHang'),
+    path('taikhoan/', views.taikhoan, name='TaiKhoan'),
 
     path('api/loai/', views.getLoai, name='GetLoai'),
     path('api/timkiem/', views.getTimKiem, name='GetTimKiem'),

@@ -160,7 +160,10 @@ def giohang(request):
 
     return render(request, 'giohang.html')
 
-### API #########################################
+def taikhoan(request):
+    return render(request, 'taikhoan.html')
+
+### API ###################################################################################
 @api_view(['GET'])
 def getLoai(request):
     loai = Loai.objects.all()
