@@ -61,9 +61,10 @@ $('.payment-action').click(() => {
     if (paymentMethod.length > 0) {
         $.ajax({
             type: 'POST',
-            url: '/order/checkout',
+            url: '/dathang/thanhtoan',
+            headers: { "X-CSRFToken": $('#csrf_token_input').val() },
             data: {
-                paymentMethod: paymentMethod
+                payment_med: paymentMethod
             },
             success: (res) => {
                 if (!res.success) {

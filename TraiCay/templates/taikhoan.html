@@ -118,36 +118,39 @@
                         </div>
                         <hr />
                         <div class="order-list-box mt-1">
-                            <div class="order-list">
-                                <table class="table">
-                                    <tr>
-                                        <th>Mã ĐH</th>
-                                        <th>Ngày đặt</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái</th>
-                                        <th></th>
-                                    </tr>
-                
-                                    <tr>
-                                        <td class="order-id"></td>
-                                        <td class="order-date"></td>
-                                        <td class="order-total"></td>
-                                        <td>
-                                            <div class="order-status order-success"></div>
-                                        </td>
-                                        <td> <a href="#">Chi tiết</a></td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class="order-empty d-flex flex-column gap-3 align-items-center justify-content-center">
-                                <img src="#" alt="" />
-                                <span>Bạn chưa có đơn hàng nào</span>
-                                <button class="to-home-page-btn" onclick="window.location.href='/loai/all'">
-                                    TIẾP TỤC MUA HÀNG
-                                </button>
-                            </div>
-
+                            {% if HoaDon %}
+                                <div class="order-list">
+                                    <table class="table">
+                                        <tr>
+                                            <th>Mã ĐH</th>
+                                            <th>Ngày đặt</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Trạng thái</th>
+                                            <th></th>
+                                        </tr>
+                    
+                                        {% for hd in HoaDon %}
+                                            <tr>
+                                                <td class="order-id">{{hd.MaHD}}</td>
+                                                <td class="order-date">{{hd.NgayMua|date:"d/m/Y"}}</td>
+                                                <td class="order-total">{{hd.TongTien|floatformat:"0"|intcomma}}đ</td>
+                                                <td>
+                                                    <div class="order-status order-success"></div>
+                                                </td>
+                                                <td> <a href="#">Chi tiết</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="order-empty d-flex flex-column gap-3 align-items-center justify-content-center">
+                                    <img src="#" alt="" />
+                                    <span>Bạn chưa có đơn hàng nào</span>
+                                    <button class="to-home-page-btn" onclick="window.location.href='/loai/all'">
+                                        TIẾP TỤC MUA HÀNG
+                                    </button>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -8,12 +8,12 @@ from django.contrib.auth.models import User
 #############
 class Loai(models.Model):
     MaLoai = models.CharField(max_length=10, primary_key=True)
-    TenLoai = models.CharField(max_length=100)
+    TenLoai = models.CharField(max_length=100, unique=True)
 
 class SanPham(models.Model):
     MaSP = models.CharField(max_length=10, primary_key=True)
     MaLoai = models.ForeignKey(Loai, on_delete=models.SET_NULL, null=True)
-    TenSP = models.CharField(max_length=100)
+    TenSP = models.CharField(max_length=100, unique=True)
     DonGia = models.DecimalField(max_digits=10, decimal_places=2)
     MoTa = models.TextField()
 
@@ -57,9 +57,9 @@ class HoaDon(models.Model):
     MaHD = models.CharField(max_length=10, primary_key=True)
     MaKH = models.ForeignKey(KhachHang, on_delete=models.SET_NULL, null=True)
     NgayMua = models.DateField()
-    TongTien = models.DecimalField(max_digits=10, decimal_places=2),
-    DiaChiGiao = models.CharField(max_length=100, null=True),
-    PhuongThucThanhToan = models.CharField(max_length=10, null=True),
+    TongTien = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    DiaChiGiao = models.CharField(max_length=100, null=True)
+    PhuongThucThanhToan = models.CharField(max_length=10, null=True)
     TrangThai = models.CharField(max_length=100, null=True)
 
 class ChiTietHoaDon(models.Model):
@@ -81,7 +81,7 @@ class ChiTietKho(models.Model):
 
 class PhieuNhapHang(models.Model):
     MaPNH = models.CharField(max_length=10, primary_key=True)
-    MaNCC = models.ForeignKey(KhachHang, on_delete=models.SET_NULL, null=True)
+    MaNCC = models.ForeignKey(NhaCungCap, on_delete=models.SET_NULL, null=True)
     NgayNhap = models.DateField()
     TongTien = models.DecimalField(max_digits=10, decimal_places=2)
 

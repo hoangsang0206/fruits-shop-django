@@ -194,11 +194,15 @@ def tt_dat_hang(request):
     user = request.user
     if not user or not user.is_authenticated:
         return HttpResponseRedirect('/giohang')
-    
+
+    order_temp = request.session.get('order_temp')
+    if not order_temp:
+        return HttpResponseRedirect('/giohang') 
+
     kh = KhachHang.objects.get(user=user)
     giohang = GioHang.objects.filter(user = user)
     total = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
-    return render(request, 'ttdathang.html', {'TongTien': total, 'KH': kh, 'OrderTemp': request.session.get('order_temp')})
+    return render(request, 'ttdathang.html', {'TongTien': total, 'KH': kh, 'OrderTemp': order_temp})
 
 
 @api_view(['POST'])
@@ -226,14 +230,67 @@ def thanh_toan(request):
         return Response({'success': False, 'url': '/giophang'}, status=status.HTTP_200_OK)
 
     order_id = random_ma_donhang()
-    total_price = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
-    cus = KhachHang.objects.get(user=user)
-    HoaDon.objects.create(MaKH=cus.MaKH, MaHD=order_id, NgayMua=datetime.datetime.now(), TrangThai='Chờ thanh toán')
-
     payment_med = request.data.get('payment_med')
+    address = order_temp['shipmed'] if order_temp['shipmed'] != 'COD' else order_temp['address']
+    total_price = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
+
+    customer = KhachHang.objects.get(user=user)
+    HoaDon.objects.create(MaHD=order_id, MaKH=customer, NgayMua=datetime.datetime.now(), TongTien=total_price, 
+            DiaChiGiao=address, PhuongThucThanhToan=payment_med, TrangThai='Chờ thanh toán')
+    hoadon = HoaDon.objects.get(MaHD=order_id, MaKH=customer)
+
+    for gh in giohang:
+        ChiTietHoaDon.objects.create(MaSP=gh.SanPham, DonGia=gh.SoLuong * gh.SanPham.DonGia, MaHD=hoadon, SoLuong=gh.SoLuong)
+        kho = ChiTietKho.objects.filter(MaSP=SanPham.objects.get(MaSP=gh.SanPham.MaSP))
+        total_qty_remain = 0
+        for k in kho:
+            if k.SoLuongTon < gh.SoLuong:
+                total_qty_remain = gh.SoLuong - k.SoLuongTon
+                k.SoLuongTon = 0
+            else:
+                total_qty_remain = k.SoLuongTon - gh.SoLuong
+                k.SoLuongTon -= gh.SoLuong
+
+            k.save()
+
+            if total_qty_remain <= 0:
+                break
+
+        gh.delete()
+
+    del request.session['order_temp']
+    request.session.modified = True
+
+    if payment_med == 'COD':
+        if hoadon:
+            request.session['payment_status'] = {'status': True}
+            return Response({'success': True, 'url': '/dathang/thanhcong'}, status=status.HTTP_200_OK)
+        else:
+            request.session['payment_status'] = {'status': False}
+            return Response({'success': True, 'url': '/dathang/thatbai'}, status=status.HTTP_200_OK)
+
+    return Response(status=status.HTTP_403_FORBIDDEN)
+
+def thanh_toan_thanh_cong(request):
+    payment_status = request.session.get('payment_status')
+    if not payment_status or not payment_status['status']:
+        return HttpResponseRedirect('/')
+
+    del request.session['payment_status']
+    request.session.modified = True
+    
+    return render(request, 'dathangthanhcong.html')
 
 
+def thanh_toan_that_bai(request):
+    payment_status = request.session.get('payment_status')
+    if not payment_status or payment_status['status']:
+        return HttpResponseRedirect('/')
 
+    del request.session['payment_status']
+    request.session.modified = True
+
+    return render(request, 'dathangthatbai.html')
 ##
 
 
@@ -244,7 +301,8 @@ def taikhoan(request):
 
     try:
         kh = KhachHang.objects.get(user=user)
-        return render(request, 'taikhoan.html', {'KH': kh})
+        hoadon = HoaDon.objects.filter(MaKH=kh)
+        return render(request, 'taikhoan.html', {'KH': kh, 'HoaDon': hoadon})
     except Exception:
         pass
     return render(request, 'taikhoan.html')
