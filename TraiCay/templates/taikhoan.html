@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% block title %}Tài khoản{% endblock %}
+{% block title %}Tài KHoản{% endblock %}
 
 {% block content %}
     {% load static %}
@@ -25,7 +25,7 @@
                         <li class="account-nav-list-item" id="info-nav">
                             <a href="#account-info" class="activeNav">
                                 <i class="fa-solid fa-user account-list-icon"></i>
-                                <span>Thông tin tài khoản</span>
+                                <span>Thông tin tài KHoản</span>
                             </a>
                         </li>
                         <li class="account-nav-list-item" id="orders-nav">
@@ -37,7 +37,7 @@
                         <li class="account-nav-list-item" id="password-nav">
                             <a href="#password">
                                 <i class="fa-solid fa-key account-list-icon"></i>
-                                <span>Đổi mật khẩu</span>
+                                <span>Đổi mật KHẩu</span>
                             </a>
                         </li>
                         <li class="account-nav-list-item">
@@ -51,20 +51,20 @@
             </div>
             <div class="account-right-side">
                 <div class="account-right-box current" data-account-side="account-info">
-                    <h3 class="r-side-header">Thông tin tài khoản</h3>
+                    <h3 class="r-side-header">Thông tin tài KHoản</h3>
                     <div class="account-info-wrapper">
                         <form action="#" method="post" class="user-update-form">
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
                                     <span>Họ tên</span>
                                 </div>
-                                <input type="text" id="UserFulName" name="UserFulName" value="" placeholder="Họ tên"/>
+                                <input type="text" id="UserFulName" name="UserFulName" value="{{KH.TenKH}}" placeholder="Họ tên"/>
                             </div>
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
                                     <span>Số điện thoại</span>
                                 </div>
-                                <input type="text" id="PhoneNumber" name="PhoneNumber" value="" placeholder="Số điện thoạt"/>
+                                <input type="text" id="PhoneNumber" name="PhoneNumber" value="{{KH.SDT}}" placeholder="Số điện thoạt"/>
                             </div>
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
@@ -76,7 +76,7 @@
                                 <div class="user-input-label text-end">
                                     <span>Địa chỉ</span>
                                 </div>
-                                <input type="text" id="Address" name="Address" value="" placeholder="Địa chỉ" />
+                                <input type="text" id="Address" name="Address" value="{{KH.DiaChi}}" placeholder="Địa chỉ" />
                             </div>
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end"></div>
@@ -153,24 +153,24 @@
                 </div>
 
                 <div class="account-right-box" data-account-side="password">
-                    <h3 class="r-side-header">Đổi mật khẩu</h3>
+                    <h3 class="r-side-header">Đổi mật KHẩu</h3>
                     <div class="password-wrapper">
                         <form action="#" method="post" class="change-password-form">
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
-                                    <span>Mật khẩu cũ</span>
+                                    <span>Mật KHẩu cũ</span>
                                 </div>
                                 <input type="password" id="OldPassword" name="OldPassword" value="" required />
                             </div>
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
-                                    <span>Mật khẩu mới</span>
+                                    <span>Mật KHẩu mới</span>
                                 </div>
                                 <input type="password" id="NewPassword" name="NewPassword" value="" required />
                             </div>
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
-                                    <span>Nhập lại mật khẩu mới</span>
+                                    <span>Nhập lại mật KHẩu mới</span>
                                 </div>
                                 <input type="password" id="ConfirmNewPassword" name="ConfirmNewPassword" value="" required />
                             </div>
@@ -193,7 +193,7 @@
                     <i class='bx bx-x'></i>
                 </div>
                 <h4>Tải hình ảnh hồ sơ</h4>
-                <div>* Kích thước hình ảnh không lớn hơn 5MB.</div>
+                <div>* Kích thước hình ảnh KHông lớn hơn 5MB.</div>
                 <div class="mb-3">* Hãy chọn ảnh có tỉ lệ 1:1</div>
                 <div class="upload-user-img d-flex flex-column align-items-center justify-content-center gap-2">
                     <i class="fa-solid fa-cloud-arrow-up"></i>

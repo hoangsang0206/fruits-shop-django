@@ -69,8 +69,9 @@ $('.user-update-form').submit((e) => {
     var submitBtn = $(e.target).find('.user-form-submit');
     var btnText = showBtnLoading(submitBtn);
     $.ajax({
-        type: 'POST',
-        url: '/account/update',
+        type: 'PUT',
+        url: '/api/taikhoan/capnhat',
+        headers: { "X-CSRFToken": $('#csrf_token_input').val() },
         data: {
             fullname: fullName,
             phone: phone,
@@ -92,7 +93,6 @@ $('.user-update-form').submit((e) => {
             else {
                 $('.update-error').empty();
                 var str = '<span>' + response.error +'</span>'
-               
                 $('.update-error').append(str);
 
                 var timeout = setTimeout(() => {

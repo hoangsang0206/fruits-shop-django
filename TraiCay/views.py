@@ -167,8 +167,13 @@ def taikhoan(request):
     if not user or not user.is_authenticated:
         return HttpResponseRedirect('/dangnhap')
 
+    try:
+        kh = KhachHang.objects.get(user=user)
+        return render(request, 'taikhoan.html', {'KH': kh})
+    except Exception:
+        pass
     return render(request, 'taikhoan.html')
-
+    
 ### API ###################################################################################
 @api_view(['GET'])
 def getLoai(request):
@@ -363,3 +368,49 @@ def doi_mat_khau(request):
     update_session_auth_hash(request, user)
 
     return Response({'success': True}, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def sua_thong_tin_kh(request):
+    user = request.user
+    if not user or not user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    
+    fullname = request.data.get('fullname')
+    phone = request.data.get('phone')
+    email = request.data.get('email')
+    address = request.data.get('address')
+
+    try:
+        kh = KhachHang.objects.get(user=user)
+        kh.TenKH = fullname
+        kh.SDT = phone
+        kh.Email = email
+        kh.DiaChi = address
+        kh.save()
+
+        user.email = email
+        user.save()
+        update_session_auth_hash(request, user)
+
+        return Response({'success': True}, status=status.HTTP_200_OK)
+    except KhachHang.DoesNotExist:
+
+        KhachHang.objects.create(MaKH=random_makh(), TenKH=fullname, SDT=phone, Email=email, DiaChi=address, user=user)
+        return Response({'success': True}, status=status.HTTP_200_OK)
+    except Exception:
+        pass
+
+    return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+
+
+def random_makh():
+    all_kh = KhachHang.objects.order_by('MaKH')
+    
+    if all_kh:
+        last_kh = all_kh.last()
+        num = int(last_kh.MaKH[2:])
+        return 'KH{:06d}'.format(num + 1)
+
+    return 'KH000001'
