@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% block title %}Tài KHoản{% endblock %}
+{% block title %}Tài khoản{% endblock %}
 
 {% block content %}
     {% load static %}
@@ -135,7 +135,7 @@
                                                 <td class="order-date">{{hd.NgayMua|date:"d/m/Y"}}</td>
                                                 <td class="order-total">{{hd.TongTien|floatformat:"0"|intcomma}}đ</td>
                                                 <td>
-                                                    <div class="order-status order-success"></div>
+                                                    <div class="order-status order-waiting">{{hd.TrangThai}}</div>
                                                 </td>
                                                 <td> <a href="#">Chi tiết</a></td>
                                             </tr>

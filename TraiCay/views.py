@@ -15,7 +15,7 @@ from .forms import FormDangKy
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import LoaiSerializer, SanPhamSerializer
+from .serializers import *
 
 # Create your views here.
 def dangky(request):
@@ -52,6 +52,18 @@ def loc_theo_loai(request, id):
     else:
         loai = get_object_or_404(Loai, pk=id)
         sanpham = SanPham.objects.filter(MaLoai = loai)
+
+    sort = request.GET.get('s')
+    if sort == 'random':
+        sanpham = sanpham.order_by('?')
+    elif sort == 'p-asc':
+        sanpham = sanpham.order_by('DonGia')
+    elif sort == 'p-desc':
+        sanpham = sanpham.order_by('-DonGia')
+    elif sort == 'n-asc':
+        sanpham = sanpham.order_by('TenSP')
+    elif sort == 'n-desc':
+        sanpham = sanpham.order_by('-TenSP')
 
     # phân trang
     limit = 20
@@ -93,6 +105,18 @@ def tim_kiem(request):
         sanpham = SanPham.objects.filter(TenSP__icontains=query)
     else:
         sanpham = SanPham.objects.all()
+
+    sort = request.GET.get('s')
+    if sort == 'random':
+        sanpham = sanpham.order_by('?')
+    elif sort == 'p-asc':
+        sanpham = sanpham.order_by('DonGia')
+    elif sort == 'p-desc':
+        sanpham = sanpham.order_by('-DonGia')
+    elif sort == 'n-asc':
+        sanpham = sanpham.order_by('TenSP')
+    elif sort == 'n-desc':
+        sanpham = sanpham.order_by('-TenSP')
 
     # phân trang
     limit = 20
@@ -306,6 +330,14 @@ def taikhoan(request):
     except Exception:
         pass
     return render(request, 'taikhoan.html')
+
+def chi_tiet_hd(request):
+    user = request.user
+    if not user or not user.is_authenticated:
+        return HttpResponseRedirect('/taikhoan#orders')
+    
+
+    return render(request, 'chitiethd.html')
     
 ### API ###################################################################################
 @api_view(['GET'])
@@ -534,6 +566,25 @@ def sua_thong_tin_kh(request):
         pass
 
     return Response(status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET'])
+def get_hoa_don(request):
+    user = request.user
+    if not user or not user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    try:
+        mahd = request.GET.get('id')
+        kh = KhachHang.objects.get(user=user)
+        hoadon = HoaDon.objects.filter(MaKH=kh, MaHD__icontains=mahd)
+        return Response(HoaDonSerializer(hoadon, many=True).data, status=status.HTTP_200_OK)
+    except Exception:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+
+        
 
 
 

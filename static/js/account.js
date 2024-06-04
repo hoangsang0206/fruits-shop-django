@@ -278,3 +278,45 @@ $(window).on('hashchange' ,() => {
 })
 
 
+//Orders search
+$('.order-search-form').submit((e) => {
+    e.preventDefault();
+    var orderID = $('#order-search').val();
+
+    showWebLoader();
+    $.ajax({
+        type: 'GET',
+        url: '/api/donhang/timkiem',
+        data: {
+            id: orderID
+        },
+        success: (data) => {
+            setTimeout(hideWebLoader, 500);
+            var str = ` <tr>
+                    <th>Mã ĐH</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái thanh toán</th>
+                    <th>Trạng thái</th>
+                    <th></th>
+                </tr>`;
+            $('.order-list table tbody').empty();
+            $.each(data, (index, order) => {
+                const date = new Date(order.NgayMua)
+                str += `<tr>
+                    <td class="order-id">${order.MaHD}</td>
+                    <td class="order-date">${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}</td>
+                    <td class="order-total">${parseFloat(order.TongTien).toLocaleString("vi-VN") + 'đ'}đ</td>
+                    <td>
+                        <div class="order-status order-waiting">${order.TrangThai}</div>
+                    </td>
+                    <td> <a href="#">Chi tiết</a></td>
+                </tr>`;
+            })
+
+            $('.order-list table tbody').append(str);
+            setParentHeight();
+        },
+        error: () => { hideWebLoader(); }
+    })
+})

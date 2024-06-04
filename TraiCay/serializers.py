@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Loai, SanPham, HinhAnhSP, ChiTietKho
+from .models import *
 
 class LoaiSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +30,8 @@ class SanPhamSerializer(serializers.ModelSerializer):
             quantity = 0
 
         return quantity
+
+class HoaDonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HoaDon
+        fields = '__all__'
