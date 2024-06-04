@@ -2,7 +2,6 @@
 
 //Kiểm tra thông tin người đặt hàng 
 $('.order-info-summary').click(() => {
-    var gender = $('input[name="gender"]:checked').val();
     var name = $('#UserFullName').val();
     var phone = $('#PhoneNumber').val();
     var shipMethod = $('input[name="shipmethod"]:checked').val();
@@ -10,31 +9,30 @@ $('.order-info-summary').click(() => {
     var note = $('#cart-note').val();
 
     $.ajax({
-        type: 'Post',
-        url: '/order/checkorderinfo',
+        type: 'POST',
+        url: '/dathang/kiemtra',
+        headers: { "X-CSRFToken": $('#csrf_token_input').val() },
         data: {
-            gender: gender,
-            customerName: name,
-            customerPhone: phone,
-            shipMethod: shipMethod,
+            name: name,
+            phone: phone,
+            shipmed: shipMethod,
             address: address,
             note: note
         },
         success: (res) => {
-            if (res.success) {       
+            if (res.success) {
                 $.ajax({
                     type: 'POST',
-                    url: '/account/update',
+                    url: '/api/taikhoan/capnhat',
+                    headers: { "X-CSRFToken": $('#csrf_token_input').val() },
                     data: {
-                        UserFullName: name,
-                        Gender: gender,
-                        PhoneNumber: phone,
-                        Address: address
+                        fullname: name,
+                        phone: phone
                     },
                     success: (response) => {
                         if (response.success) {
-                            window.location.href = '/order/orderinfo';
-                        }
+                            window.location.href = '/dathang/chitiet';
+                        } 
                     },
                     error: () => { }
                 })

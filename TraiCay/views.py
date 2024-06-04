@@ -144,6 +144,12 @@ def giohang(request):
 
         giohang = GioHang.objects.filter(user = user)
         total = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
+        
+        try:
+            kh = KhachHang.objects.get(user=user)
+            return render(request, 'giohang.html', {'Cart': giohang, 'TongTien': total, 'KH': kh})
+        except Exception:
+            pass
         return render(request, 'giohang.html', {'Cart': giohang, 'TongTien': total})
     else:
         session_cart = request.session.get('cart', None)
@@ -161,6 +167,39 @@ def giohang(request):
             return render(request, 'giohang.html', {'Cart': cart, 'TongTien': total})
 
     return render(request, 'giohang.html')
+
+
+### 
+@api_view(['POST'])
+def kiem_tra_thong_tin_dat_hang(request):
+    fullname = request.data.get('name')
+    phone = request.data.get('phone')
+    address = request.data.get('address')
+    shipmed = request.data.get('shipmed')
+    note = request.data.get('note')
+
+    if not fullname or not phone or not shipmed:
+        return Response({'success': False, 'error': 'Vui lòng nhập đầy đủ thông tin'}, status=status.HTTP_200_OK)
+
+    if shipmed == 'COD':
+        if not address:
+            return Response({'success': False, 'error': 'Vui lòng nhập địa chỉ'}, status=status.HTTP_200_OK)
+
+    request.session['order_temp'] = {'shipmed': shipmed, 'address': address, 'note': note}
+    return Response({'success': True})
+
+
+def tt_dat_hang(request):
+    user = request.user
+    if not user or not user.is_authenticated:
+        return HttpResponseRedirect('/giohang')
+    
+    
+    return render(request, 'ttdathang.html')
+
+
+##
+
 
 def taikhoan(request):
     user = request.user
@@ -382,13 +421,13 @@ def sua_thong_tin_kh(request):
 
     try:
         kh = KhachHang.objects.get(user=user)
-        kh.TenKH = fullname
-        kh.SDT = phone
-        kh.Email = email
-        kh.DiaChi = address
+        kh.TenKH = fullname if fullname else kh.TenKH
+        kh.SDT = phone if phone else kh.SDT
+        kh.Email = email if email else kh.Email
+        kh.DiaChi = address if address else kh.DiaChi
         kh.save()
 
-        user.email = email
+        user.email = email if email else kh.Email
         user.save()
         update_session_auth_hash(request, user)
 

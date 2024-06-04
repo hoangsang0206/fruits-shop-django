@@ -11,7 +11,7 @@
                 <div class="account-name d-flex align-items-center gap-3">
                     <div class="user-image-box position-relative">
                         <div class="user-image">
-                            <img src="{% static '/images/no-user-image-icon.png' %}" alt="" class="user-img" />
+                            <img src="{% static '/images/logo/logo.png' %}" alt="" class="user-img" />
                         </div>
                         <button class="upload-img-btn position-absolute">
                             <i class='bx bx-plus'></i>
@@ -25,7 +25,7 @@
                         <li class="account-nav-list-item" id="info-nav">
                             <a href="#account-info" class="activeNav">
                                 <i class="fa-solid fa-user account-list-icon"></i>
-                                <span>Thông tin tài KHoản</span>
+                                <span>Thông tin tài khoản</span>
                             </a>
                         </li>
                         <li class="account-nav-list-item" id="orders-nav">
@@ -37,7 +37,7 @@
                         <li class="account-nav-list-item" id="password-nav">
                             <a href="#password">
                                 <i class="fa-solid fa-key account-list-icon"></i>
-                                <span>Đổi mật KHẩu</span>
+                                <span>Đổi mật khẩu</span>
                             </a>
                         </li>
                         <li class="account-nav-list-item">
@@ -153,26 +153,26 @@
                 </div>
 
                 <div class="account-right-box" data-account-side="password">
-                    <h3 class="r-side-header">Đổi mật KHẩu</h3>
+                    <h3 class="r-side-header">Đổi mật khẩu</h3>
                     <div class="password-wrapper">
                         <form action="#" method="post" class="change-password-form">
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
-                                    <span>Mật KHẩu cũ</span>
+                                    <span>Mật khẩu cũ</span>
                                 </div>
-                                <input type="password" id="OldPassword" name="OldPassword" value="" required />
+                                <input type="password" id="OldPassword" name="OldPassword" value="" placeholder="Mật khẩu cũ" required />
                             </div>
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
-                                    <span>Mật KHẩu mới</span>
+                                    <span>Mật khẩu mới</span>
                                 </div>
-                                <input type="password" id="NewPassword" name="NewPassword" value="" required />
+                                <input type="password" id="NewPassword" name="NewPassword" value="" placeholder="Mật khẩu mới" required />
                             </div>
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end">
-                                    <span>Nhập lại mật KHẩu mới</span>
+                                    <span>Nhập lại mật khẩu mới</span>
                                 </div>
-                                <input type="password" id="ConfirmNewPassword" name="ConfirmNewPassword" value="" required />
+                                <input type="password" id="ConfirmNewPassword" name="ConfirmNewPassword" value="" placeholder="Xác nhận mật khẩu mới" required />
                             </div>
                             <div class="user-form-box d-flex align-items-center">
                                 <div class="user-input-label text-end"></div>

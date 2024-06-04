@@ -118,23 +118,13 @@
                                             <div class="cart-form-header">
                                                 <h5>Thông tin khách mua hàng</h5>
                                             </div>
-                                            <div class="cart-form-checkbox d-flex gap-3">
-                                                <div class="checkbox-item">
-                                                    <input type="radio" id="men" name="gender" value="Nam" @(ViewBag.User.Gender == "Nam" ? "checked" : "") />
-                                                    <label for="men">Nam</label>
-                                                </div>
-                                                <div class="checkbox-item">
-                                                    <input type="radio" id="women" name="gender" value="Nữ" @(ViewBag.User.Gender == "Nữ" ? "checked" : "") />
-                                                    <label for="women">Nữ</label>
-                                                </div>
-                                            </div>
                                             <div class="cart-form-input my-4">
                                                 <div class="form-input-box position-relative d-flex align-items-center">
-                                                    <input type="text" id="UserFullName" name="UserFullName" value="@ViewBag.User.UserFullName" class="form-input" required />
+                                                    <input type="text" id="UserFullName" name="UserFullName" value="{{KH.TenKH}}" class="form-input" required />
                                                     <label for="UserFullName" class="input-label position-absolute">Họ tên</label>
                                                 </div>
                                                 <div class="form-input-box position-relative d-flex align-items-center">
-                                                    <input type="text" id="PhoneNumber" name="PhoneNumber" value="@ViewBag.User.PhoneNumber" class="form-input" required />
+                                                    <input type="text" id="PhoneNumber" name="PhoneNumber" value="{{KH.SDT}}" class="form-input" required />
                                                     <label for="PhoneNumber" class="input-label position-absolute">Số điện thoại</label>
                                                 </div>
                                             </div>
@@ -148,7 +138,7 @@
                                                 </div>
                                                 <div class="input-ship-info">
                                                     <div class="form-input-box position-relative d-flex align-items-center">
-                                                        <input type="text" id="ship-address" name="ship-address" value="@ViewBag.User.Address" class="form-input" required />
+                                                        <input type="text" id="ship-address" name="ship-address" value="{{KH.DiaChi}}" class="form-input" required />
                                                         <label for="ship-address" class="input-label position-absolute">Địa chỉ nhận hàng</label>
                                                     </div>
                                                 </div>
@@ -175,7 +165,7 @@
                                 </div>
                                 <div class="summary-price">
                                     <span class="s-price-title">Tổng tiền: </span>
-                                    <span class="total-price">@(totalPrice.ToString("##,###", ViewBag.cul))đ</span>
+                                    <span class="total-price">{{TongTien|floatformat:"0"|intcomma}}đ</span>
                                 </div>
                                 <button class="summary-action order-info-summary">
                                     ĐẶT HÀNG NGAY
