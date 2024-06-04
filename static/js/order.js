@@ -22,7 +22,7 @@ $('.order-info-summary').click(() => {
         success: (res) => {
             if (res.success) {
                 $.ajax({
-                    type: 'POST',
+                    type: 'PUT',
                     url: '/api/taikhoan/capnhat',
                     headers: { "X-CSRFToken": $('#csrf_token_input').val() },
                     data: {
@@ -60,20 +60,24 @@ $('.payment-action').click(() => {
 
     if (paymentMethod.length > 0) {
         $.ajax({
-            type: 'Post',
+            type: 'POST',
             url: '/order/checkout',
             data: {
                 paymentMethod: paymentMethod
             },
             success: (res) => {
-                if (res.success == false) {
-                    var str = ``;
-                    $.each(res.error, (index, value) => {
-                        console.log(value)
-                        str += `<li><i class="fa-solid fa-circle-exclamation"></i><span>${value}</span></li>`;
-                    })
-
-                    showOrderNotice(str);
+                if (!res.success) {
+                    if(res.url != null) {
+                        window.location.href = res.url;
+                    } else {
+                        var str = ``;
+                        $.each(res.error, (index, value) => {
+                            console.log(value)
+                            str += `<li><i class="fa-solid fa-circle-exclamation"></i><span>${value}</span></li>`;
+                        })
+    
+                        showOrderNotice(str);
+                    }
                 }
                 else {
                     window.location.href = res.url;

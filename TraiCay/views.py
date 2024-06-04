@@ -7,6 +7,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 
 import json
+import datetime
 
 from .models import *
 from .forms import FormDangKy
@@ -194,8 +195,43 @@ def tt_dat_hang(request):
     if not user or not user.is_authenticated:
         return HttpResponseRedirect('/giohang')
     
-    
-    return render(request, 'ttdathang.html')
+    kh = KhachHang.objects.get(user=user)
+    giohang = GioHang.objects.filter(user = user)
+    total = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
+    return render(request, 'ttdathang.html', {'TongTien': total, 'KH': kh, 'OrderTemp': request.session.get('order_temp')})
+
+
+@api_view(['POST'])
+def thanh_toan(request):
+    user = request.user
+    if not user or not user.is_authenticated:
+        return Response({'success': False, 'url': '/giophang'}, status=status.HTTP_200_OK)
+
+    giohang = GioHang.objects.filter(user=user)
+    if not giohang:
+        return Response({'success': False, 'url': '/giophang'}, status=status.HTTP_200_OK)
+
+    count_het_hang = 0
+    errors = []
+    for gh in giohang:
+        if gh.SanPham.TonKho() <= 0:
+            errors.append('Sản phẩm' + gh.SanPham.TenSP +  'đã hết hàng.')
+            count_het_hang += 1
+
+    if count_het_hang > 0:
+        return Response({'success': False, 'error': errors}, status=status.HTTP_200_OK)
+
+    order_temp = request.session.get('order_temp')
+    if not order_temp:
+        return Response({'success': False, 'url': '/giophang'}, status=status.HTTP_200_OK)
+
+    order_id = random_ma_donhang()
+    total_price = sum([gh.SanPham.DonGia * gh.SoLuong for gh in giohang])
+    cus = KhachHang.objects.get(user=user)
+    HoaDon.objects.create(MaKH=cus.MaKH, MaHD=order_id, NgayMua=datetime.datetime.now(), TrangThai='Chờ thanh toán')
+
+    payment_med = request.data.get('payment_med')
+
 
 
 ##
@@ -453,3 +489,13 @@ def random_makh():
         return 'KH{:06d}'.format(num + 1)
 
     return 'KH000001'
+
+def random_ma_donhang():
+    all_hd = HoaDon.objects.order_by('MaHD')
+    
+    if all_hd:
+        last_hd = all_hd.last()
+        num = int(last_hd.MaHD[2:])
+        return 'HD{:06d}'.format(num + 1)
+
+    return 'HD000001'
