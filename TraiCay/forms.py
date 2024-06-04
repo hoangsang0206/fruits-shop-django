@@ -34,4 +34,3 @@ class FormDangKy(forms.Form):
         User.objects.create_user(username = self.cleaned_data['username'],
                                     email = self.cleaned_data['email'],
                                     password = self.cleaned_data['password'])
-

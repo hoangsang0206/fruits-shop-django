@@ -21,4 +21,5 @@ urlpatterns = [
     path('api/giohang/capnhat', views.get_so_luong, name='GetSoLuong'),
     path('api/giohang/xoa', views.xoa_sanpham_gio_hang, name='XoaGioHang'),
     path('api/giohang/capnhatsoluong', views.cap_nhat_so_luong, name='CapNhatSoLuong'),
+    path('api/taikhoan/doimatkhau', views.doi_mat_khau, name='DoiMatKhau'),
 ]

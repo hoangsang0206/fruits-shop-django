@@ -3,6 +3,8 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 import json
 
@@ -161,6 +163,10 @@ def giohang(request):
     return render(request, 'giohang.html')
 
 def taikhoan(request):
+    user = request.user
+    if not user or not user.is_authenticated:
+        return HttpResponseRedirect('/dangnhap')
+
     return render(request, 'taikhoan.html')
 
 ### API ###################################################################################
@@ -335,3 +341,25 @@ def cap_nhat_so_luong(request):
             total_price += sp.DonGia * c['SoLuong']
 
     return Response({'total': total_price, 'qty': res_qty}, status=status.HTTP_200_OK)
+
+
+@api_view(['PUT'])
+def doi_mat_khau(request):
+    user =request.user
+    if not user or not user.is_authenticated:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    old_p = request.data.get('old_p')
+    new_p = request.data.get('new_p')
+    conf_p = request.data.get('confirm_p')
+
+    if not user.check_password(old_p):
+        return Response({'success': False, 'error': 'Mật khẩu cũ không đúng'}, status=status.HTTP_200_OK)
+    if new_p != conf_p:
+        return Response({'success': False, 'error': 'Xác nhận mật khẩu không đúng'}, status=status.HTTP_200_OK)
+    
+    user.set_password(new_p)
+    user.save()
+    update_session_auth_hash(request, user)
+
+    return Response({'success': True}, status=status.HTTP_200_OK)

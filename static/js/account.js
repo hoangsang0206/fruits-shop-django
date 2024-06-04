@@ -52,6 +52,111 @@ function updateUploadFormNotice(string, status) {
 
     $('.upload-frm-notice').append(string);
 }
+
+function closeUpdateErr() {
+    $('.update-error').empty();
+}
+
+
+//
+$('.user-update-form').submit((e) => {
+    e.preventDefault();
+    var fullName = $('#UserFulName').val();
+    var phone = $('#PhoneNumber').val();
+    var email = $('#Email').val();
+    var address = $('#Address').val();
+
+    var submitBtn = $(e.target).find('.user-form-submit');
+    var btnText = showBtnLoading(submitBtn);
+    $.ajax({
+        type: 'POST',
+        url: '/account/update',
+        data: {
+            fullname: fullName,
+            phone: phone,
+            email: email,
+            address: address
+        },
+        success: (response) => {
+            resetBtn(submitBtn, btnText);
+            if (response.success) {
+                var str = '<span>Cập nhật thành công.</span>';
+                $('.update-error').empty();
+                $('.update-error').append(str);
+
+                var timeout = setTimeout(() => {
+                    closeUpdateErr();
+                    clearTimeout(timeout);
+                }, 6000)
+            }
+            else {
+                $('.update-error').empty();
+                var str = '<span>' + response.error +'</span>'
+               
+                $('.update-error').append(str);
+
+                var timeout = setTimeout(() => {
+                    closeUpdateErr();
+                    clearTimeout(timeout);
+                }, 6000)
+            }
+        },
+        error: (err) => { resetBtn(submitBtn, btnText); }
+    })
+})
+
+//-Change password -----------------------------------
+$('.change-password-form').submit((e) => {
+    e.preventDefault();
+    var oldPassword = $('#OldPassword').val();
+    var newPassword = $('#NewPassword').val();
+    var confirmNewPassword = $('#ConfirmNewPassword').val();
+
+    var submitBtn = $(e.target).find('.user-form-submit');
+    var btnText = showBtnLoading(submitBtn);
+    $.ajax({
+        type: 'PUT',
+        url: '/api/taikhoan/doimatkhau',
+        headers: { "X-CSRFToken": $('#csrf_token_input').val() },
+        data: {
+            old_p: oldPassword,
+            new_p: newPassword,
+            confirm_p: confirmNewPassword
+        },
+        success: (response) => {
+            resetBtn(submitBtn, btnText);
+            if (response.success) {
+                var str = '<span>Đổi mật khẩu thành công.</span>';
+                $('.update-error').empty();
+                $('.update-error').append(str);
+
+                $('#OldPassword').val('');
+                $('#NewPassword').val('');
+                $('#ConfirmNewPassword').val('');
+
+                var timeout = setTimeout(() => {
+                    closeUpdateErr();
+                    clearTimeout(timeout);
+                }, 6000)
+            }
+            else {
+                $('.update-error').empty();
+                var str = `<span>${response.error}</span>`;
+
+                $('.update-error').append(str);
+
+                var timeout = setTimeout(() => {
+                    closeUpdateErr();
+                    clearTimeout(timeout);
+                }, 6000)
+            }
+
+        },
+        error: () => { resetBtn(submitBtn, btnText); }
+    })
+})
+
+
 //------------
 
 $(document).ready(() => {
@@ -171,3 +276,5 @@ showCard();
 $(window).on('hashchange' ,() => {
     showCard();
 })
+
+

@@ -1,17 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 # Custom user
-class CustomUser(AbstractUser):
-    DOB = models.DateField(blank=True, null=True)
-    Avatar = models.TextField(blank=True, null=True)
-    FullName = models.CharField(max_length=50, blank=True, null=True)
-    Phone = models.CharField(max_length=20, blank=True, null=True)
-    Gender = models.BooleanField(default=True, null=True)
-    Address = models.CharField(max_length=150, blank=True, null=True)
-
 
 #############
 class Loai(models.Model):
@@ -45,7 +37,7 @@ class KhachHang(models.Model):
     SDT = models.CharField(max_length=20)
     Email = models.CharField(max_length=100)
     DiaChi = models.CharField(max_length=100)
-    user = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, null=True)
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
 
 class NhanVien(models.Model):
     MaNV = models.CharField(max_length=10, primary_key=True)
@@ -103,6 +95,6 @@ class Slider(models.Model):
     Link = models.TextField()
 
 class GioHang(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     SanPham = models.ForeignKey(SanPham, on_delete=models.CASCADE, null=False)
     SoLuong = models.IntegerField(default=0, null=False)
