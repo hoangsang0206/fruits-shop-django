@@ -4,7 +4,10 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="mb-4">Danh sách loại</h2>
+    <div class="d-flex align-items-center justify-content-between">
+        <h2 class="mb-4">Danh sách loại</h2>
+        <a href="{% url 'ThemLoai' %}" class="btn btn-sm btn-primary mx-1">Thêm</a>
+    </div>
     <table class="table table-hover w-75 mx-auto">
         <thead class="thead-dark">
             <tr>
@@ -19,7 +22,6 @@
                 <td>{{ tl.MaLoai }}</td>
                 <td>{{ tl.TenLoai }}</td>
                 <td>
-                    <a href="{% url 'ThemLoai' %}" class="btn btn-sm btn-primary mx-1">Thêm</a>
                     <a href="{% url 'XoaLoai' %}" class="btn btn-sm btn-danger mx-1">Xóa</a>
                     <a href="{% url 'SuaLoai' %}" class="btn btn-sm btn-warning mx-1">Sửa</a>
                 </td>
