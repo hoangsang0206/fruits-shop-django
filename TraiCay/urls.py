@@ -22,6 +22,17 @@ urlpatterns = [
     path('hoadon/<str:hd>', views.chi_tiet_hd, name='ChiTietHD'),
     path('hoadon/xoa/<str:hd>', views.xoa_don_hang, name='XoaDonHang'),
 
+    path('dsLoai', views.list, name='dsLoai'),
+    path('dsSanPham', views.list_product, name='dsSanPham'),
+    path('dsKho', views.list_Kho, name='dsKho'),
+    path('ThemLoai', views.ThemLoai, name='ThemLoai'),
+    path('XoaLoai', views.xoa_loai, name='XoaLoai'),
+    path('SuaLoai', views.SuaLoai, name='SuaLoai'),
+    path('ThemSP', views.ThemSP, name='ThemSP'),
+    path('XoaSP', views.XoaSP, name='XoaSP'),
+    path('SuaSP', views.SuaSP, name='SuaSP'),
+    path('ChiTietKho/<str:Mk>/', views.ChiTiet_Kho, name='ChiTietKho'),
+
     path('api/loai/', views.getLoai, name='GetLoai'),
     path('api/timkiem/', views.getTimKiem, name='GetTimKiem'),
     path('api/giohang/them', views.them_gio_hang, name='ThemGioHang'),

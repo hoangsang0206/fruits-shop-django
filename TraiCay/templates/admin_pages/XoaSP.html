@@ -1,0 +1,25 @@
+{% extends "layout/admin_layout/layout.html" %} 
+{% block title %} Xóa Sản phẩm {% endblock %} 
+{% block content %}
+<div class="container mt-4">
+    <h2 class="w-100 p-3 text-danger">Xóa loại</h2>
+    <form action="{% url 'XoaSP' %}" method="POST" class="w-50 border p-4 shadow-sm bg-light">
+        {% csrf_token %}
+        <div class="form-group mb-4">
+            <label for="MaSP">Mã sản phẩm:</label>
+            {{ form.MaSP }}
+            {% if form.MaSP.errors %}
+                <div class="text-danger">{{ form.MaSP.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="text-center mt-4">
+            <input type="submit" value="Xóa sản phẩm" class="btn btn-primary" onclick="return confirmXoaSP()">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function confirmXoaSP() {
+        return confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?");
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout/admin_layout/layout.html" %}
+
+{% block title %}Chi tiết kho{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Chi tiết kho</h2>
+    <table class="table table-hover table-sm w-100 mx-auto">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Số lượng tồn</th>
+                <th scope="col">Mã kho</th>
+                <th scope="col">Mã sản phẩm</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ct in ds_ctKho %}
+            <tr>
+                <td>{{ ct.SoLuongTon   }}</td>
+                <td>{{ ct.MaKho.MaKho }}</td>
+                <td>{{ ct.MaSP.TenSP }}</td> 
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

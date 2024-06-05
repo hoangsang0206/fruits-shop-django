@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> {% load static %}
+    <title>{% block title %} {% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        .sidebar {
+            height: 100%;
+            background: #f8f9fa;
+            padding-top: 20px;
+        }
+        .sidebar .nav-item .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        .sidebar .nav-item .navbar-brand:hover {
+            text-decoration: none;
+            /* background-color: #ffc107; */
+            border-radius: 4px;
+        }
+        .sidebar .nav-item .navbar-brand i {
+            margin-right: 10px;
+        }
+        .bg-warning {
+            background-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <body>
+        <div class="container-md">
+            <header>
+                <div class="row">
+                    <content class="row py-4">
+                        <div class="col-2 sidebar">
+                            <nav class="w-100">
+                                <div class="nav flex-column">
+                                    <div class="nav-item p-2">
+                                        <a class="navbar-brand" href="#">
+                                            <i class="fas fa-home"></i> Trang chủ
+                                        </a>
+                                    </div>
+                                    <div class="nav-item p-2 bg-warning">
+                                        <a class="navbar-brand" href="{% url 'dsLoai' %}">
+                                            <i class="fas fa-list-alt"></i> Danh sách loại
+                                        </a>
+                                    </div>
+                                    <div class="nav-item p-2 bg-warning">
+                                        <a class="navbar-brand" href="{% url 'dsSanPham' %}">
+                                            <i class="fas fa-box-open"></i> Danh sách sản phẩm
+                                        </a>
+                                    </div>
+                                    <div class="nav-item p-2 bg-warning">
+                                        <a class="navbar-brand" href="{% url 'dsKho' %}">
+                                            <i class="fas fa-box-open"></i> Danh sách kho
+                                        </a>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                        <div class="col-md">
+                            {% block content %} {% endblock %}
+                        </div>
+                    </content>              
+                </div> 
+            </header>
+        </div>
+    </body>
+</html>

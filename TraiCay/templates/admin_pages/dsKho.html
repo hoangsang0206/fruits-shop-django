@@ -1,0 +1,32 @@
+{% extends "layout/admin_layout/layout.html" %}
+
+{% block title %}Danh sách kho{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Danh sách kho</h2>
+    <table class="table table-hover table-sm w-100 mx-auto">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Mã kho</th>
+                <th scope="col">Tên kho</th>
+                <th scope="col">Địa chỉ kho</th>
+                <th scope="col">Số điện thoại</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for k in ds_Kho %}
+            <tr>
+                <td>{{ k.MaKho }}</td>
+                <td>{{ k.TenKho }}</td> 
+                <td>{{ k.DiaChiKho }}</td>
+                <td>{{ k.SDT }}</td>
+                <td>
+                    <a href="{% url 'ChiTietKho' Mk=k.MaKho %}" class="btn btn-sm btn-primary mx-1">Hiển thị chi tiết kho</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

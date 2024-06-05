@@ -10,7 +10,7 @@ import json
 import datetime
 
 from .models import *
-from .forms import FormDangKy
+from .forms import *
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -634,3 +634,93 @@ def random_ma_donhang():
         return 'HD{:06d}'.format(num + 1)
 
     return 'HD000001'
+
+
+
+# Admin
+def list(request):
+    data = {
+        'ds_Loai': Loai.objects.all(),
+    }
+    return render(request, 'admin_pages/dsLoai.html',data)
+
+def list_product(request):
+    data1 = {
+        'ds_SanPham': SanPham.objects.all(),
+    }
+    return render(request, 'admin_pages/dsSanPham.html', data1)
+
+def list_Kho(request):
+    data2 = {
+        'ds_Kho': Kho.objects.all(),
+    }
+    return render(request, 'admin_pages/dsKho.html', data2)
+
+def list_ctKho(request):
+    data3 = {
+        'ds_ctKho': ChiTietKho.objects.all(),
+    }
+    return render(request, 'admin_pages/dsCTKho.html', data3)
+
+def ThemLoai(request):
+    form = ThemLoaiForm()
+    if request.method == 'POST':
+        form = ThemLoaiForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/dsLoai')
+    return render(request, 'admin_pages/ThemLoai.html', {'form': form})
+
+def xoa_loai(request):
+    if request.method == 'POST':
+        form = XoaLoaiForm(request.POST)
+        if form.is_valid():
+            form.delete()
+            return HttpResponseRedirect('/dsLoai')
+    else:
+        form = XoaLoaiForm()
+    return render(request, 'admin_pages/XoaLoai.html', {'form': form})
+
+def SuaLoai(request):
+    form = SuaLoaiForm()
+    if request.method == 'POST':
+        form = SuaLoaiForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/dsLoai')
+    return render(request, 'admin_pages/SuaLoai.html', {'form': form})
+
+def ThemSP(request):
+    form = ThemSPForm()
+    if request.method == 'POST':
+        form = ThemSPForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/dsSanPham')
+    return render(request, 'admin_pages/ThemSP.html', {'form': form})
+
+def XoaSP(request):
+    if request.method == 'POST':
+        form = XoaSPForm(request.POST)
+        if form.is_valid():
+            form.delete()
+            return HttpResponseRedirect('/dsSanPham')
+    else:
+        form = XoaSPForm()
+    return render(request, 'admin_pages/XoaSP.html', {'form': form})
+
+def SuaSP(request):
+    form = SuaSPForm()
+    if request.method == 'POST':
+        form = SuaSPForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/dsSanPham')
+    return render(request, 'admin_pages/SuaSP.html', {'form': form})
+
+def ChiTiet_Kho(request, Mk):
+    ct = ChiTietKho.objects.all().filter(MaKho=Mk)
+    data = {
+        'ds_ctKho':ct,
+    }
+    return render(request, 'admin_pages/ChiTietKho.html', data)

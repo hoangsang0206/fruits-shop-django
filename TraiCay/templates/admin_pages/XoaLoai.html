@@ -1,0 +1,27 @@
+{% extends "layout/admin_layout/layout.html" %}
+{% block title %} Xóa loại {% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="w-100 p-3 text-danger">Xóa loại</h2>
+    <form id="xoaLoaiForm" action="{% url 'XoaLoai' %}" method="POST" class="w-50 border p-4 shadow-sm bg-light">
+        {% csrf_token %}
+        <div class="form-group mb-4">
+            <label for="id_MaLoai">Mã loại:</label>
+            {{ form.MaLoai }}
+            {% if form.MaLoai.errors %}
+                <div class="text-danger">{{ form.MaLoai.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="text-center mt-4">
+            <input type="submit" value="Xóa loại" class="btn btn-danger" onclick="return confirmXoaLoai()">
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+function confirmXoaLoai() {
+    return confirm("Bạn có chắc chắn muốn xóa loại này không?");
+}
+</script>
+{% endblock %}
+
