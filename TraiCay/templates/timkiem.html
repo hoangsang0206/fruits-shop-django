@@ -81,7 +81,7 @@
                     <div class="product-box">
                         <a href="/sanpham/{{fruit.MaSP}}" class="product-link">
                             <div class="product-image lazy-loading">
-                                <img lazy-src="{% if fruit.HinhAnh %} {{fruit.HinhAnh}} {% else %} {% static 'images/no-images.jpg' %} {% endif %}" alt="" class="product-img">
+                                <img lazy-src="{% if fruit.HinhAnh %} {{fruit.HinhAnh}} {% else %} {% static 'images/no-image.jpg' %} {% endif %}" alt="" class="product-img">
                             </div>
                         </a>
                         {% if fruit.TonKho <= 0 %}
