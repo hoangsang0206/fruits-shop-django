@@ -428,7 +428,7 @@ $(document).ready(function () {
             $('.search-history').children('h4').hide();
 
             for (var i = searchHistory.length - 1; i >= 0; i--) {
-                $('.search-history-list').append(`<a href="/search/${searchHistory[i]}">`
+                $('.search-history-list').append(`<a href="/timkiem?q=${searchHistory[i]}">`
                     + `<li class="search-history-list-item">`
                     + searchHistory[i] + '</li>' + '</a>');
             }

@@ -9,7 +9,7 @@ class FormDangKy(forms.Form):
     password = forms.CharField()
     password_confirm = forms.CharField()
 
-    def clean_password2(self):
+    def clean_password_confirm(self):
         if 'password' in self.cleaned_data:
             password = self.cleaned_data['password']
             password_confirm = self.cleaned_data['password_confirm']
