@@ -29,9 +29,13 @@
             <div class="row">
                 <div class="col-lg-5 col-md-12 col-sm-12 col-12 product-detail-box product-gallery">
                     <div class="slider-main">
-                        {% for img in Fruit.TatCaHinhAnh %}
-                            <img src="{{img.HinhAnh}}" alt="" />
-                        {% endfor %}
+                        {% if Fruit.TatCaHinhAnh %}
+                            {% for img in Fruit.TatCaHinhAnh %}
+                                <img src="{{img.HinhAnh}}" alt="" />
+                            {% endfor %}
+                        {% else %}
+                            <img src="{% static 'images/logo/logo.png' %}" alt="">
+                        {% endif %}
                     </div>
                     <div class="slider-nav mt-3">
                         {% for img in Fruit.TatCaHinhAnh %}
@@ -121,7 +125,7 @@
                             <div class="product-box">
                                 <a href="/sanpham/{{fruit.MaSP}}" class="product-link">
                                     <div class="product-image lazy-loading">
-                                        <img lazy-src="{% if fruit.HinhANh %} {{fruit.HinhAnh}} {% else %} {% static 'images/no-images.jpg' %} {% endif %}" alt="" class="product-img">
+                                        <img lazy-src="{% if fruit.HinhANh %} {{fruit.HinhAnh}} {% else %} {% static 'images/no-image.jpg' %} {% endif %}" alt="" class="product-img">
                                     </div>
                                 </a>
                                 {% if fruit.TonKho <= 0 %}
